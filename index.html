@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marco — Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111111;
+      --bg2: #171717;
+      --bg3: #1e1e1e;
+      --border: rgba(255,255,255,0.08);
+      --text: #f0ede8;
+      --muted: #888;
+      --accent: #c8f060;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ─── LANG TRANSITION ────────────────── */
+    [data-i18n] {
+      transition: opacity 0.2s ease;
+    }
+    body.lang-switching [data-i18n] {
+      opacity: 0;
+    }
+
+    /* ─── NAV ─────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      background: rgba(17,17,17,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ─── LANG TOGGLE ─────────────────────── */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .lang-btn {
+      padding: 6px 13px;
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+      line-height: 1;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #111;
+    }
+    .lang-btn:not(.active):hover { color: var(--text); }
+
+    .lang-sep {
+      width: 1px;
+      height: 16px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ─── SECTIONS SHARED ─────────────────── */
+    section {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 120px 48px;
+    }
+
+    .section-divider {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+    .section-divider hr {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    /* ─── SCROLL REVEAL ──────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── HERO ────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 100px;
+      padding-bottom: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 64px;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(42px, 7vw, 80px);
+      line-height: 1.0;
+      letter-spacing: -3px;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.35s forwards;
+    }
+    .hero-title em { font-style: normal; color: var(--accent); }
+
+    .hero-tagline {
+      font-size: clamp(18px, 2.5vw, 22px);
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.55;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background: var(--accent);
+      color: #111;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 4px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.65s forwards;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(200,240,96,0.25);
+    }
+
+    .hero-photo-wrap { opacity: 0; animation: fadeIn 1s 0.4s forwards; }
+
+    .hero-photo {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: var(--bg3);
+      overflow: hidden;
+      border: 2px solid var(--border);
+      position: relative;
+    }
+    .hero-photo::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 1px solid rgba(200,240,96,0.15);
+    }
+    .hero-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+
+    /* ─── WORK ────────────────────────────── */
+    #work .section-intro {
+      color: var(--muted);
+      font-size: 17px;
+      margin-top: 8px;
+      max-width: 480px;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.25s, transform 0.25s;
+      cursor: pointer;
+    }
+    .card:hover { border-color: rgba(200,240,96,0.3); transform: translateY(-4px); }
+
+    .card-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      background: var(--bg3);
+      overflow: hidden; position: relative;
+    }
+    .card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .card:hover .card-thumb img { transform: scale(1.04); }
+
+    .card-thumb.songtastic { background: #1a0a2e; }
+    .card-thumb.echo       { background: #e8f000; }
+    .card-thumb.unitec     { background: #0a1628; }
+    .card-thumb.mazati     { background: #1a1812; }
+
+    .card-thumb-label {
+      position: absolute; bottom: 12px; left: 16px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 10px;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+      border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);
+    }
+    .card-thumb.echo .card-thumb-label { color: #111; background: rgba(230,240,0,0.7); border-color: transparent; }
+
+    .card-body { padding: 24px 24px 28px; flex: 1; display: flex; flex-direction: column; }
+
+    .card-tag {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-family: var(--font-display); font-weight: 700; font-size: 20px;
+      letter-spacing: -0.5px; line-height: 1.25; margin-bottom: 10px;
+    }
+
+    .card-desc { font-size: 14px; color: var(--muted); line-height: 1.6; flex: 1; }
+
+    .card-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 20px; font-size: 13px; font-weight: 500;
+      color: var(--accent); letter-spacing: 0.02em;
+    }
+    .card-link svg { transition: transform 0.2s; }
+    .card:hover .card-link svg { transform: translateX(4px); }
+
+    /* ─── EXPERIENCE ──────────────────────── */
+    #experience .exp-desc {
+      color: var(--muted); font-size: 17px;
+      max-width: 560px; margin-top: 8px; margin-bottom: 56px;
+    }
+
+    .brands-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    .brand-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .brand-card:hover { border-color: rgba(255,255,255,0.16); transform: translateY(-3px); }
+
+    .brand-logo-area {
+      height: 120px; display: flex;
+      align-items: center; justify-content: center;
+      background: #0d0d0d; padding: 0 28px;
+    }
+    .brand-logo-area img {
+      max-height: 52px; max-width: 100%;
+      width: auto; object-fit: contain;
+      filter: grayscale(1) brightness(0.9);
+      transition: filter 0.3s ease;
+    }
+    .brand-card:hover .brand-logo-area img {
+      filter: grayscale(0) brightness(1);
+    }
+
+    .brand-name {
+      padding: 14px 20px;
+      font-family: var(--font-display); font-size: 14px; font-weight: 700;
+      letter-spacing: 0.02em; border-top: 1px solid var(--border);
+    }
+
+    /* ─── ABOUT ───────────────────────────── */
+    #about .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    #about p { font-size: 17px; line-height: 1.75; color: var(--muted); margin-bottom: 18px; }
+    #about p strong { color: var(--text); font-weight: 500; }
+
+    .skills-col h3 {
+      font-family: var(--font-display); font-size: 13px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+    }
+
+    .skills-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .skill-tag {
+      padding: 6px 14px; border: 1px solid var(--border); border-radius: 100px;
+      font-size: 13px; color: var(--muted); background: var(--bg2);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─── CONTACT ─────────────────────────── */
+    #contact { text-align: center; }
+
+    #contact .contact-eyebrow {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+    }
+
+    #contact h2 { font-size: clamp(36px, 5vw, 60px); letter-spacing: -2px; margin-bottom: 20px; }
+    #contact .contact-sub { color: var(--muted); font-size: 17px; margin-bottom: 56px; }
+
+    .contact-links { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 48px; }
+
+    .contact-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 24px; border: 1px solid var(--border); border-radius: 8px;
+      background: var(--bg2); color: var(--text); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      transition: border-color 0.2s, transform 0.2s, color 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .contact-link.primary { background: var(--accent); border-color: var(--accent); color: #111; }
+    .contact-link.primary:hover { background: #d4f572; transform: translateY(-2px); color: #111; }
+
+    /* ─── FOOTER ──────────────────────────── */
+    footer {
+      text-align: center; padding: 32px 48px;
+      border-top: 1px solid var(--border); color: var(--muted); font-size: 13px;
+    }
+
+    /* ─── CASE STUDY OVERLAY ─────────────── */
+    .cs-overlay {
+      position: fixed; inset: 0; background: var(--bg);
+      z-index: 200; overflow-y: auto;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s;
+    }
+    .cs-overlay.open { opacity: 1; pointer-events: all; }
+
+    .cs-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 48px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0;
+      background: rgba(17,17,17,0.92); backdrop-filter: blur(12px); z-index: 10;
+    }
+
+    .cs-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 14px; cursor: pointer;
+      background: none; border: none; padding: 0;
+      font-family: var(--font-body); transition: color 0.2s;
+    }
+    .cs-back:hover { color: var(--text); }
+
+    .cs-content { max-width: 780px; margin: 0 auto; padding: 64px 48px 120px; }
+
+    .cs-content h1 {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(32px, 5vw, 52px); letter-spacing: -2px;
+      margin-bottom: 16px; line-height: 1.05;
+    }
+
+    .cs-meta { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 48px; }
+    .cs-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .cs-meta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+    .cs-meta-val { font-size: 15px; color: var(--text); }
+
+    .cs-hero-img {
+      width: 100%; border-radius: 12px; margin-bottom: 56px;
+      background: var(--bg3); aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .cs-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .cs-content h2 { font-size: 22px; margin-top: 48px; margin-bottom: 16px; letter-spacing: -0.5px; }
+    .cs-content p { color: var(--muted); font-size: 16px; line-height: 1.8; margin-bottom: 20px; }
+
+    .cs-placeholder {
+      font-style: italic; color: rgba(136,136,136,0.5); font-size: 14px;
+      border: 1px dashed rgba(255,255,255,0.08); padding: 32px;
+      border-radius: 8px; text-align: center; margin: 32px 0;
+    }
+
+    /* ─── RESPONSIVE ──────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .nav-right { gap: 16px; }
+      section { padding: 80px 24px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-photo-wrap { order: -1; }
+      .hero-photo { width: 160px; height: 160px; }
+      .work-grid { grid-template-columns: 1fr; }
+      .brands-grid { grid-template-columns: 1fr; }
+      #about .about-inner { grid-template-columns: 1fr; gap: 40px; }
+      .cs-header, .cs-content { padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Marco<span>.</span></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#work"       data-i18n="nav.work">Work</a></li>
+      <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
+      <li><a href="#about"      data-i18n="nav.about">About</a></li>
+      <li><a href="#contact"    data-i18n="nav.contact">Contact</a></li>
+    </ul>
+    <div class="lang-toggle" role="group" aria-label="Language selector">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <div class="lang-sep"></div>
+      <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="hero-eyebrow" data-i18n="hero.eyebrow">Product Designer · Available for hire</p>
+      <h1 class="hero-title">Hey, I'm<br><em>Marco</em></h1>
+      <p class="hero-tagline" data-i18n="hero.tagline">
+        Product Designer focused on engagement, gamification, and scalable mobile experiences.
+      </p>
+      <a href="#work" class="hero-cta">
+        <span data-i18n="hero.cta">See my work</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="hero-photo-wrap">
+      <div class="hero-photo">
+        <img src="assets/photo.jpg" alt="Marco" onerror="this.style.display='none'" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- SELECTED WORK -->
+<section id="work">
+  <h2 class="reveal" data-i18n="work.title">Selected Work</h2>
+  <p class="section-intro reveal reveal-delay-1" data-i18n="work.intro">A selection of projects across mobile, gamification, and brand design.</p>
+
+  <div class="work-grid">
+
+    <div class="card reveal reveal-delay-1" onclick="location.href='songtastic.html'"  style="cursor:pointer">
+      <div class="card-thumb songtastic">
+        <img src="assets/thumb-songtastic.jpg" alt="Songtastic" onerror="this.style.display='none'" />
+        <span class="card-thumb-label">Songtastic</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag" data-i18n="work.songtastic.tag">Mobile · Gamification</span>
+        <h3 class="card-title" data-i18n="work.songtastic.title">Songtastic: Gamified Music Experience</h3>
+        <p class="card-desc" data-i18n="work.songtastic.desc">Improving engagement and monetization through gameplay and feature redesign.</p>
+        <span class="card-link">
+          <span data-i18n="work.cta.study">View case study</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div class="card reveal reveal-delay-2" onclick="location.href='echo.html'" style="cursor:pointer">
+      <div class="card-thumb echo">
+        <img src="assets/thumb-echo.jpg" alt="ECHO" onerror="this.style.display='none'" />
+        <span class="card-thumb-label">ECHO</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag" data-i18n="work.echo.tag">Brand · Storytelling</span>
+        <h3 class="card-title" data-i18n="work.echo.title">TREBEL ECO: Year in Review Experience</h3>
+        <p class="card-desc" data-i18n="work.echo.desc">Designing a personalized storytelling experience with motion, scalable visuals, and branded integrations.</p>
+        <span class="card-link">
+          <span data-i18n="work.cta.study">View case study</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div class="card reveal reveal-delay-3" onclick="location.href='unitec.html'" style="cursor:pointer">
+      <div class="card-thumb unitec">
+        <img src="assets/thumb-unitec.jpg" alt="UNITEC" onerror="this.style.display='none'" />
+        <span class="card-thumb-label">UNITEC</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag" data-i18n="work.unitec.tag">Design System · Web</span>
+        <h3 class="card-title" data-i18n="work.unitec.title">UNITEC: Scaling a Design System Under Tight Deadlines</h3>
+        <p class="card-desc" data-i18n="work.unitec.desc">From incomplete wireframes to a fully designed platform across 30+ pages.</p>
+        <span class="card-link">
+          <span data-i18n="work.cta.study">View case study</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div class="card reveal reveal-delay-4" onclick="location.href='mazati.html'" style="cursor:pointer">
+      <div class="card-thumb mazati">
+        <img src="assets/thumb-mazati.jpg" alt="Mazati Reserve" onerror="this.style.display='none'" />
+        <span class="card-thumb-label">Mazati Reserve</span>
+      </div>
+      <div class="card-body">
+        <span class="card-tag" data-i18n="work.mazati.tag">UX · Wireframes</span>
+        <h3 class="card-title" data-i18n="work.mazati.title">Mazati Reserve</h3>
+        <p class="card-desc" data-i18n="work.mazati.desc">UX exploration and wireframe system for a luxury hospitality brand.</p>
+        <span class="card-link">
+          <span data-i18n="work.cta.detail">View detail</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <h2 class="reveal" data-i18n="exp.title">Experience</h2>
+  <p class="exp-desc reveal reveal-delay-1" data-i18n="exp.desc">
+    Worked on products used by millions of users, collaborating across product, brand, and engineering teams.
+  </p>
+
+  <div class="brands-grid">
+    <div class="brand-card reveal reveal-delay-1">
+      <div class="brand-logo-area">
+        <img src="assets/logo-reforma.png" alt="Grupo Reforma" />
+      </div>
+      <p class="brand-name">Grupo Reforma</p>
+    </div>
+    <div class="brand-card reveal reveal-delay-2">
+      <div class="brand-logo-area">
+        <img src="assets/logo-trebel.png" alt="TREBEL" />
+      </div>
+      <p class="brand-name">TREBEL</p>
+    </div>
+    <div class="brand-card reveal reveal-delay-3">
+      <div class="brand-logo-area">
+        <img src="assets/logo-televisa.png" alt="TELEVISA Digital" />
+      </div>
+      <p class="brand-name">TELEVISA Digital</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="reveal">
+      <h2 data-i18n="about.title">About</h2>
+      <p data-i18n="about.p1"><strong>Product Designer</strong> with experience in mobile apps, gamification, and content-driven experiences.</p>
+      <p data-i18n="about.p2">Focused on building scalable systems that balance <strong>user experience</strong>, business goals, and technical constraints.</p>
+      <p data-i18n="about.p3">I design digital products that are intuitive, visually strong, and built for real-world constraints.</p>
+    </div>
+    <div class="skills-col reveal reveal-delay-2">
+      <h3 data-i18n="about.toolkit">Toolkit</h3>
+      <div class="skills-list">
+        <span class="skill-tag">Figma</span>
+        <span class="skill-tag">Prototyping</span>
+        <span class="skill-tag">Design Systems</span>
+        <span class="skill-tag">Mobile UX</span>
+        <span class="skill-tag">Gamification</span>
+        <span class="skill-tag">User Research</span>
+        <span class="skill-tag">Wireframing</span>
+        <span class="skill-tag">Motion Design</span>
+        <span class="skill-tag">Brand Identity</span>
+        <span class="skill-tag">HTML / CSS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><hr></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="contact-eyebrow reveal" data-i18n="contact.eyebrow">Get in touch</p>
+  <h2 class="reveal reveal-delay-1" data-i18n="contact.title">Let's work<br>together.</h2>
+  <p class="contact-sub reveal reveal-delay-2" data-i18n="contact.sub">Available for hire or freelance product design projects.</p>
+
+  <div class="contact-links reveal reveal-delay-3">
+    <a href="mailto:majguerrero@gmail.com" class="contact-link primary">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4l6 4.5L14 4M2 4h12v8H2V4z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      majguerrero@gmail.com
+    </a>
+    <a href="www.linkedin.com/in/marc0-jass0" target="_blank" class="contact-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="1.5" width="13" height="13" rx="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 6.5v5M4 4.5v.01M7 11.5V9a1.5 1.5 0 013 0v2.5M7 6.5v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://www.behance.net/conDobleEse/projects" target="_blank" class="contact-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h5.5a2 2 0 010 4H2V4zm0 4h6a2 2 0 010 4H2V8z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 5.5h4M12 8.5c0 1.1.9 2 2 2s2-.9 2-2h-4zm0 0c0-1.1.9-2 2-2s2 .9 2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Behance
+    </a>
+    <a href="assets/cv-marco.pdf" download class="contact-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2h6l3 3v9H3V2h1zm6 0v3h3M8 7v5M5.5 9.5L8 12l2.5-2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i18n="contact.cv">Download CV</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p data-i18n="footer.text">Designed & built by me — 2026</p>
+</footer>
+
+
+<!-- CASE STUDY PAGES: songtastic.html / echo.html / unitec.html / mazati.html -->
+
+<!-- (overlays removed — case studies now live in separate pages) -->
+<div class="cs-overlay" id="cs-songtastic" style="display:none">
+
+
+
+<script>
+  /* ════════════════════════════════════════
+     i18n DICTIONARY
+  ════════════════════════════════════════ */
+  const dict = {
+    en: {
+      'nav.work': 'Work',
+      'nav.experience': 'Experience',
+      'nav.about': 'About',
+      'nav.contact': 'Contact',
+
+      'hero.eyebrow': 'Product Designer · Available for hire',
+      'hero.tagline': 'Product Designer focused on engagement, gamification, and scalable mobile experiences.',
+      'hero.cta': 'See my work',
+
+      'work.title': 'Selected Work',
+      'work.intro': 'A selection of projects across mobile, gamification, and brand design.',
+      'work.cta.study': 'View case study',
+      'work.cta.detail': 'View detail',
+
+      'work.songtastic.tag': 'Mobile · Gamification',
+      'work.songtastic.title': 'Songtastic: Gamified Music Experience',
+      'work.songtastic.desc': 'Improving engagement and monetization through gameplay and feature redesign.',
+
+      'work.echo.tag': 'Brand · Storytelling',
+      'work.echo.title': 'TREBEL ECO: Year in Review Experience',
+      'work.echo.desc': 'Designing a personalized storytelling experience with motion, scalable visuals, and branded integrations.',
+
+      'work.unitec.tag': 'Design System · Web',
+      'work.unitec.title': 'UNITEC: Scaling a Design System Under Tight Deadlines',
+      'work.unitec.desc': 'From incomplete wireframes to a fully designed platform across 30+ pages.',
+
+      'work.mazati.tag': 'UX · Wireframes',
+      'work.mazati.title': 'Mazati Reserve',
+      'work.mazati.desc': 'UX exploration and wireframe system for a luxury hospitality brand.',
+
+      'exp.title': 'Experience',
+      'exp.desc': 'Worked on products used by millions of users, collaborating across product, brand, and engineering teams.',
+
+      'about.title': 'About',
+      'about.p1': '<strong>Product Designer</strong> with experience in mobile apps, gamification, and content-driven experiences.',
+      'about.p2': 'Focused on building scalable systems that balance <strong>user experience</strong>, business goals, and technical constraints.',
+      'about.p3': 'I design digital products that are intuitive, visually strong, and built for real-world constraints.',
+      'about.toolkit': 'Toolkit',
+
+      'contact.eyebrow': 'Get in touch',
+      'contact.title': "Let's work<br>together.",
+      'contact.sub': 'Available for hire or freelance product design projects.',
+      'contact.cv': 'Download CV',
+
+      'footer.text': 'Designed & built by Marco — 2025',
+
+      'cs.back': 'Back to portfolio',
+      'cs.overview': 'Overview',
+      'cs.role': 'Role',
+      'cs.type': 'Type',
+      'cs.focus': 'Focus',
+      'cs.placeholder': '✏️ Add your full case study content here — context, process, decisions, and outcomes.',
+      'cs.songtastic.role': 'Lead Product Designer',
+      'cs.echo.role': 'Product Designer',
+      'cs.echo.type': 'Brand Experience',
+      'cs.unitec.role': 'Product Designer',
+      'cs.unitec.type': 'Web Platform',
+      'cs.unitec.focus': 'Design System · 30+ pages',
+      'cs.mazati.role': 'UX Designer',
+      'cs.mazati.type': 'UX Exploration',
+      'cs.mazati.focus': 'Wireframes · Luxury Brand',
+    },
+
+    es: {
+      'nav.work': 'Trabajo',
+      'nav.experience': 'Experiencia',
+      'nav.about': 'Sobre mí',
+      'nav.contact': 'Contacto',
+
+      'hero.eyebrow': 'Product Designer · Disponible para proyectos',
+      'hero.tagline': 'Product Designer enfocado en engagement, gamificación y experiencias móviles escalables.',
+      'hero.cta': 'Ver mi trabajo',
+
+      'work.title': 'Trabajo Selecto',
+      'work.intro': 'Una selección de proyectos en mobile, gamificación y diseño de marca.',
+      'work.cta.study': 'Ver caso de estudio',
+      'work.cta.detail': 'Ver detalle',
+
+      'work.songtastic.tag': 'Mobile · Gamificación',
+      'work.songtastic.title': 'Songtastic: Experiencia Musical Gamificada',
+      'work.songtastic.desc': 'Mejorando el engagement y la monetización a través de mecánicas de juego y rediseño de funciones.',
+
+      'work.echo.tag': 'Marca · Storytelling',
+      'work.echo.title': 'TREBEL ECO: Resumen del Año',
+      'work.echo.desc': 'Diseño de una experiencia personalizada de storytelling con motion, visuales escalables e integraciones de marca.',
+
+      'work.unitec.tag': 'Sistema de Diseño · Web',
+      'work.unitec.title': 'UNITEC: Escalando un Sistema de Diseño Bajo Presión',
+      'work.unitec.desc': 'De wireframes incompletos a una plataforma completamente diseñada en más de 30 pantallas.',
+
+      'work.mazati.tag': 'UX · Wireframes',
+      'work.mazati.title': 'Mazati Reserve',
+      'work.mazati.desc': 'Exploración UX y sistema de wireframes para una marca de hospitalidad de lujo.',
+
+      'exp.title': 'Experiencia',
+      'exp.desc': 'He trabajado en productos usados por millones de usuarios, colaborando con equipos de producto, marca e ingeniería.',
+
+      'about.title': 'Sobre mí',
+      'about.p1': '<strong>Product Designer</strong> con experiencia en apps móviles, gamificación y experiencias de contenido.',
+      'about.p2': 'Enfocado en construir sistemas escalables que equilibren la <strong>experiencia de usuario</strong>, los objetivos del negocio y las limitaciones técnicas.',
+      'about.p3': 'Diseño productos digitales que son intuitivos, visualmente sólidos y pensados para el mundo real.',
+      'about.toolkit': 'Herramientas',
+
+      'contact.eyebrow': 'Escríbeme',
+      'contact.title': 'Trabajemos<br>juntos.',
+      'contact.sub': 'Disponible para proyectos de diseño freelance o contratación directa.',
+      'contact.cv': 'Descargar CV',
+
+      'footer.text': 'Diseñado y desarrollado por Marco — 2025',
+
+      'cs.back': 'Volver al portafolio',
+      'cs.overview': 'Descripción general',
+      'cs.role': 'Rol',
+      'cs.type': 'Tipo',
+      'cs.focus': 'Enfoque',
+      'cs.placeholder': '✏️ Agrega el contenido completo del caso de estudio aquí — contexto, proceso, decisiones y resultados.',
+      'cs.songtastic.role': 'Product Designer Senior',
+      'cs.echo.role': 'Product Designer',
+      'cs.echo.type': 'Experiencia de Marca',
+      'cs.unitec.role': 'Product Designer',
+      'cs.unitec.type': 'Plataforma Web',
+      'cs.unitec.focus': 'Sistema de Diseño · 30+ pantallas',
+      'cs.mazati.role': 'UX Designer',
+      'cs.mazati.type': 'Exploración UX',
+      'cs.mazati.focus': 'Wireframes · Marca de Lujo',
+    }
+  };
+
+  /* ════════════════════════════════════════
+     LANGUAGE ENGINE
+  ════════════════════════════════════════ */
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    const t = dict[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) {
+        el.innerHTML = t[key];
+      }
+    });
+    document.documentElement.lang = lang;
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+  }
+
+  function setLang(lang) {
+    if (lang === currentLang) return;
+    document.body.classList.add('lang-switching');
+    setTimeout(() => {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      applyLang(lang);
+      document.body.classList.remove('lang-switching');
+    }, 200);
+  }
+
+  /* ════════════════════════════════════════
+     SCROLL REVEAL
+  ════════════════════════════════════════ */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ════════════════════════════════════════
+     CASE STUDY OVERLAY
+  ════════════════════════════════════════ */
+  function openCS(id) {
+    const el = document.getElementById('cs-' + id);
+    el.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    el.scrollTop = 0;
+  }
+
+  function closeCS(id) {
+    document.getElementById('cs-' + id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.cs-overlay.open').forEach(el => {
+        el.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    }
+  });
+
+  /* ════════════════════════════════════════
+     INIT — apply saved language on load
+  ════════════════════════════════════════ */
+  if (currentLang === 'es') applyLang('es');
+</script>
+
+</body>
+</html>
