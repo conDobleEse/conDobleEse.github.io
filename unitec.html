@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UNITEC — Marco Jasso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#111111;--bg2:#171717;--bg3:#1e1e1e;--border:rgba(255,255,255,0.08);--text:#f0ede8;--muted:#888;--accent:#c8f060;--font-display:'Syne',sans-serif;--font-body:'DM Sans',sans-serif; }
+    html{scroll-behavior:smooth;}body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.65;overflow-x:hidden;}
+    [data-i18n]{transition:opacity 0.2s ease;}body.lang-switching [data-i18n]{opacity:0;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:20px 48px;background:rgba(17,17,17,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-0.5px;color:var(--text);text-decoration:none;}.nav-logo span{color:var(--accent);}
+    .nav-right{display:flex;align-items:center;gap:32px;}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;text-decoration:none;transition:color 0.2s;}.nav-back:hover{color:var(--text);}
+    .lang-toggle{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+    .lang-btn{padding:6px 13px;font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.08em;color:var(--muted);background:none;border:none;cursor:pointer;transition:color 0.2s,background 0.2s;line-height:1;}.lang-btn.active{background:var(--accent);color:#111;}.lang-btn:not(.active):hover{color:var(--text);}
+    .lang-sep{width:1px;height:16px;background:var(--border);flex-shrink:0;}
+    .cs-hero{margin-top:65px;width:100%;height:70vh;min-height:400px;background:#0a1628;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
+    .cs-hero img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+    .cs-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,var(--bg) 100%);}
+    .cs-wrap{max-width:780px;margin:0 auto;padding:64px 48px 80px;}
+    .cs-title-block{margin-bottom:48px;}.cs-label{font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+    .cs-title{font-family:var(--font-display);font-weight:800;font-size:clamp(32px,5vw,56px);letter-spacing:-2px;line-height:1.05;margin-bottom:16px;}
+    .cs-subtitle{font-size:clamp(17px,2vw,20px);font-weight:300;color:var(--muted);line-height:1.5;margin-bottom:40px;}
+    .cs-meta{display:flex;gap:40px;flex-wrap:wrap;padding:28px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:64px;}
+    .cs-meta-item{display:flex;flex-direction:column;gap:5px;}.cs-meta-label{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);}.cs-meta-val{font-size:15px;color:var(--text);font-weight:400;}
+    .cs-section{margin-bottom:72px;}.cs-section hr{border:none;border-top:1px solid var(--border);margin:64px 0;}
+    h2.cs-h2{font-family:var(--font-display);font-weight:700;font-size:clamp(22px,3vw,30px);letter-spacing:-0.8px;margin-bottom:20px;}
+    h3.cs-h3{font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-0.3px;color:var(--accent);margin-bottom:14px;}
+    .cs-p{font-size:16px;line-height:1.8;color:var(--muted);margin-bottom:18px;}.cs-p strong{color:var(--text);font-weight:500;}
+    .cs-list{list-style:none;margin:0 0 20px;padding:0;}.cs-list li{font-size:15px;color:var(--muted);line-height:1.7;padding:6px 0 6px 20px;position:relative;}.cs-list li::before{content:'—';position:absolute;left:0;color:var(--accent);font-weight:700;}
+    .cs-img-wrap{width:100%;margin:32px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--bg3);cursor:zoom-in;position:relative;transition:border-color 0.25s;}.cs-img-wrap:hover{border-color:rgba(200,240,96,0.3);}.cs-img-wrap img{width:100%;height:auto;display:block;transition:transform 0.4s ease;}.cs-img-wrap:hover img{transform:scale(1.01);}
+    .cs-img-caption{font-size:12px;color:var(--muted);text-align:center;padding:10px 16px 14px;border-top:1px solid var(--border);background:var(--bg2);}
+    .cs-img-placeholder{width:100%;margin:32px 0;border-radius:10px;background:var(--bg3);border:1px dashed rgba(200,240,96,0.2);aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:rgba(136,136,136,0.4);font-size:13px;font-style:italic;}.cs-img-placeholder svg{opacity:0.3;}
+    .cs-highlight{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:24px 28px;margin:28px 0;}.cs-highlight p{font-size:15px;color:var(--muted);margin:0;line-height:1.7;}.cs-highlight p+p{margin-top:10px;}
+    .cs-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0;}
+    .cs-stat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:24px 20px;text-align:center;}
+    .cs-stat-num{font-family:var(--font-display);font-size:32px;font-weight:800;color:var(--accent);letter-spacing:-1px;line-height:1;}
+    .cs-stat-label{font-size:13px;color:var(--muted);margin-top:6px;}
+    .cs-learnings{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+    .cs-learning-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px 22px;}.cs-learning-item p{font-size:14px;color:var(--muted);line-height:1.6;margin:0;}
+    .cs-author{display:flex;align-items:center;gap:20px;padding:40px 0 0;margin-top:64px;border-top:1px solid var(--border);}
+    .cs-author-photo{width:56px;height:56px;border-radius:50%;background:var(--bg3);overflow:hidden;flex-shrink:0;border:2px solid var(--border);}.cs-author-photo img{width:100%;height:100%;object-fit:cover;object-position:top;}
+    .cs-author-name{font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:3px;}.cs-author-role{font-size:14px;color:var(--muted);}
+    .lightbox{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;cursor:zoom-out;padding:24px;}.lightbox.open{opacity:1;pointer-events:all;}
+    .lightbox img{max-width:100%;max-height:90vh;border-radius:8px;object-fit:contain;box-shadow:0 32px 80px rgba(0,0,0,0.6);}
+    .lightbox-close{position:absolute;top:24px;right:24px;background:var(--bg2);border:1px solid var(--border);color:var(--muted);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:color 0.2s,border-color 0.2s;}.lightbox-close:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}.reveal.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:768px){nav{padding:16px 20px;}.cs-wrap{padding:40px 24px 60px;}.cs-learnings{grid-template-columns:1fr;}.cs-meta{gap:24px;}.cs-stats{grid-template-columns:1fr 1fr;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Marco<span>.</span></a>
+  <div class="nav-right">
+    <a href="index.html#work" class="nav-back">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i18n="nav.back">Back</span>
+    </a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <div class="lang-sep"></div>
+      <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+</nav>
+
+<div class="cs-hero">
+  <img src="assets/thumb-unitec.jpg" alt="UNITEC" onerror="this.style.display='none'" />
+  <div class="cs-hero-overlay"></div>
+</div>
+
+<div class="cs-wrap">
+
+  <div class="cs-title-block reveal">
+    <p class="cs-label">UNITEC</p>
+    <h1 class="cs-title" data-i18n="title">Scaling a Design System Under Tight Deadlines</h1>
+    <p class="cs-subtitle" data-i18n="subtitle">From incomplete wireframes to a fully designed platform across 30+ pages</p>
+    <div class="cs-meta">
+      <div class="cs-meta-item"><span class="cs-meta-label" data-i18n="meta.role.label">Role</span><span class="cs-meta-val" data-i18n="meta.role.val">Product Designer</span></div>
+      <div class="cs-meta-item"><span class="cs-meta-label" data-i18n="meta.type.label">Type</span><span class="cs-meta-val" data-i18n="meta.type.val">Web Platform</span></div>
+      <div class="cs-meta-item"><span class="cs-meta-label" data-i18n="meta.focus.label">Focus</span><span class="cs-meta-val" data-i18n="meta.focus.val">Design System · 30+ pages</span></div>
+    </div>
+  </div>
+
+  <!-- Hero image -->
+   <div class="cs-img-wrap">
+      <img src="assets/unitec_01.png" alt="Current experience" />
+    </div>
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s1.h">Context</h2>
+    <p class="cs-p" data-i18n="s1.p1">This project was developed in collaboration between two agencies, where one team owned the UX and wireframes, while our team was responsible for development.</p>
+    <p class="cs-p" data-i18n="s1.p2">Due to a misalignment, development started directly from wireframes without a defined visual system, leading to a product that lacked hierarchy, consistency, and brand identity.</p>
+    <p class="cs-p" data-i18n="s1.p3">With the deadline approaching, we entered a critical phase where the product needed to be <strong>fully designed in a very limited timeframe</strong>.</p>
+    <div class="cs-img-wrap">
+      <img src="assets/unitec_02.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s2.h">The Challenge</h2>
+    <ul class="cs-list">
+      <li data-i18n="s2.l1">Over 30 pages needed visual design (desktop + mobile)</li>
+      <li data-i18n="s2.l2">No existing design system</li>
+      <li data-i18n="s2.l3">Development already in progress</li>
+      <li data-i18n="s2.l4">Tight deadlines with no margin for delays</li>
+      <li data-i18n="s2.l5">Need to ensure consistency across all pages</li>
+    </ul>
+    <div class="cs-img-wrap">
+      <img src="assets/unitec_03.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s3.h">My Role</h2>
+    <p class="cs-p" data-i18n="s3.p">I inherited responsibility for the design phase once the initial visual direction was defined. My responsibilities included:</p>
+    <ul class="cs-list">
+      <li data-i18n="s3.l1">Designing 30+ pages across desktop and mobile</li>
+      <li data-i18n="s3.l2">Defining and structuring a scalable design system</li>
+      <li data-i18n="s3.l3">Cleaning and standardizing early design components</li>
+      <li data-i18n="s3.l4">Creating reusable templates to speed up production</li>
+      <li data-i18n="s3.l5">Collaborating closely with development to ensure implementation accuracy</li>
+    </ul>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s4.h">Process</h2>
+    <h3 class="cs-h3" data-i18n="s4.sub">From emergency design to scalable system</h3>
+    <p class="cs-p" data-i18n="s4.p">Given the time constraints, I focused on building the system while designing, rather than separating both phases. This allowed me to:</p>
+    <ul class="cs-list">
+      <li data-i18n="s4.l1">Increase speed over time (from 2 to 6 pages per day)</li>
+      <li data-i18n="s4.l2">Maintain consistency across all screens</li>
+      <li data-i18n="s4.l3">Reduce design decisions by reusing components</li>
+    </ul>
+    <div class="cs-img-wrap">
+      <img src="assets/unitec_04.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s5.h">Building the Design System</h2>
+    <p class="cs-p" data-i18n="s5.p">I defined a component-based system following Atomic Design principles, including:</p>
+    <ul class="cs-list">
+      <li data-i18n="s5.l1">Buttons and CTA hierarchy</li>
+      <li data-i18n="s5.l2">Form elements and inputs</li>
+      <li data-i18n="s5.l3">Cards and content modules</li>
+      <li data-i18n="s5.l4">Filters and tags</li>
+      <li data-i18n="s5.l5">Navigation patterns</li>
+    </ul>
+    <div class="cs-highlight"><p data-i18n="s5.note">This system ensured consistency and scalability across the entire platform.</p></div>
+    <div class="cs-img-wrap">
+      <img src="assets/unitec_05.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s6.h">Final Solution</h2>
+    <p class="cs-p" data-i18n="s6.p">The final product delivered a consistent and scalable experience across all pages, improving content hierarchy, usability, and alignment with the brand.</p>
+    <div class="cs-img-wrap">
+      <img src="assets/unitec_06.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s7.h">Mobile Experience</h2>
+    <p class="cs-p" data-i18n="s7.p">Special attention was given to mobile usability, prioritizing readability, navigation simplicity, and clear CTAs.</p>
+    <div class="cs-img-wrap">
+      <img src="assets/unitec_07.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s8.h">Impact</h2>
+    <div class="cs-stats">
+      <div class="cs-stat"><div class="cs-stat-num">30+</div><div class="cs-stat-label" data-i18n="stat1">Pages delivered</div></div>
+      <div class="cs-stat"><div class="cs-stat-num">2×</div><div class="cs-stat-label" data-i18n="stat2">Design speed increase</div></div>
+      <div class="cs-stat"><div class="cs-stat-num">1</div><div class="cs-stat-label" data-i18n="stat3">Scalable system built</div></div>
+    </div>
+    <ul class="cs-list">
+      <li data-i18n="s8.l1">Delivered 30+ pages under tight deadlines</li>
+      <li data-i18n="s8.l2">Increased design speed by 2x through systemization</li>
+      <li data-i18n="s8.l3">Established a scalable design foundation for future growth</li>
+      <li data-i18n="s8.l4">Improved visual consistency across the platform</li>
+    </ul>
+  </div>
+
+  <div class="cs-author reveal">
+    <div class="cs-author-photo"><img src="assets/photo.jpg" alt="Marco Jasso" onerror="this.style.display='none'" /></div>
+    <div><p class="cs-author-name">Marco Jasso</p><p class="cs-author-role">Product Designer</p></div>
+  </div>
+
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+  const dict = {
+    en: {
+      'nav.back':'Back','title':'Scaling a Design System Under Tight Deadlines','subtitle':'From incomplete wireframes to a fully designed platform across 30+ pages',
+      'meta.role.label':'Role','meta.role.val':'Product Designer','meta.type.label':'Type','meta.type.val':'Web Platform','meta.focus.label':'Focus','meta.focus.val':'Design System · 30+ pages',
+      's1.h':'Context','s1.p1':'This project was developed in collaboration between two agencies, where one team owned the UX and wireframes, while our team was responsible for development.',
+      's1.p2':'Due to a misalignment, development started directly from wireframes without a defined visual system, leading to a product that lacked hierarchy, consistency, and brand identity.',
+      's1.p3':'With the deadline approaching, we entered a critical phase where the product needed to be <strong>fully designed in a very limited timeframe</strong>.',
+      's2.h':'The Challenge','s2.l1':'Over 30 pages needed visual design (desktop + mobile)','s2.l2':'No existing design system','s2.l3':'Development already in progress','s2.l4':'Tight deadlines with no margin for delays','s2.l5':'Need to ensure consistency across all pages',
+      's3.h':'My Role','s3.p':'I inherited responsibility for the design phase once the initial visual direction was defined. My responsibilities included:',
+      's3.l1':'Designing 30+ pages across desktop and mobile','s3.l2':'Defining and structuring a scalable design system','s3.l3':'Cleaning and standardizing early design components','s3.l4':'Creating reusable templates to speed up production','s3.l5':'Collaborating closely with development to ensure implementation accuracy',
+      's4.h':'Process','s4.sub':'From emergency design to scalable system','s4.p':'Given the time constraints, I focused on building the system while designing, rather than separating both phases. This allowed me to:',
+      's4.l1':'Increase speed over time (from 2 to 6 pages per day)','s4.l2':'Maintain consistency across all screens','s4.l3':'Reduce design decisions by reusing components',
+      's5.h':'Building the Design System','s5.p':'I defined a component-based system following Atomic Design principles, including:',
+      's5.l1':'Buttons and CTA hierarchy','s5.l2':'Form elements and inputs','s5.l3':'Cards and content modules','s5.l4':'Filters and tags','s5.l5':'Navigation patterns',
+      's5.note':'This system ensured consistency and scalability across the entire platform.',
+      's6.h':'Final Solution','s6.p':'The final product delivered a consistent and scalable experience across all pages, improving content hierarchy, usability, and alignment with the brand.',
+      's7.h':'Mobile Experience','s7.p':'Special attention was given to mobile usability, prioritizing readability, navigation simplicity, and clear CTAs.',
+      's8.h':'Impact','stat1':'Pages delivered','stat2':'Design speed increase','stat3':'Scalable system built',
+      's8.l1':'Delivered 30+ pages under tight deadlines','s8.l2':'Increased design speed by 2x through systemization','s8.l3':'Established a scalable design foundation for future growth','s8.l4':'Improved visual consistency across the platform',
+      'img.placeholder':'Add image here · assets/',
+    },
+    es: {
+      'nav.back':'Volver','title':'Escalando un Sistema de Diseño Bajo Presión','subtitle':'De wireframes incompletos a una plataforma completamente diseñada en más de 30 pantallas',
+      'meta.role.label':'Rol','meta.role.val':'Product Designer','meta.type.label':'Tipo','meta.type.val':'Plataforma Web','meta.focus.label':'Enfoque','meta.focus.val':'Sistema de Diseño · 30+ pantallas',
+      's1.h':'Contexto','s1.p1':'Este proyecto fue desarrollado en colaboración entre dos agencias, donde un equipo era dueño del UX y los wireframes, mientras nuestro equipo era responsable del desarrollo.',
+      's1.p2':'Debido a una desalineación, el desarrollo comenzó directamente desde wireframes sin un sistema visual definido, resultando en un producto que carecía de jerarquía, consistencia e identidad de marca.',
+      's1.p3':'Con la deadline acercándose, entramos en una fase crítica donde el producto necesitaba ser <strong>completamente diseñado en un tiempo muy limitado</strong>.',
+      's2.h':'El Reto','s2.l1':'Más de 30 pantallas necesitaban diseño visual (desktop + mobile)','s2.l2':'Sin sistema de diseño existente','s2.l3':'Desarrollo ya en progreso','s2.l4':'Deadlines ajustados sin margen de retraso','s2.l5':'Necesidad de consistencia en todas las pantallas',
+      's3.h':'Mi Rol','s3.p':'Heredé la responsabilidad de la fase de diseño una vez que la dirección visual inicial fue definida. Mis responsabilidades incluían:',
+      's3.l1':'Diseñar 30+ pantallas en desktop y mobile','s3.l2':'Definir y estructurar un sistema de diseño escalable','s3.l3':'Limpiar y estandarizar componentes de diseño tempranos','s3.l4':'Crear plantillas reutilizables para acelerar la producción','s3.l5':'Colaborar estrechamente con desarrollo para asegurar precisión en la implementación',
+      's4.h':'Proceso','s4.sub':'Del diseño de emergencia al sistema escalable','s4.p':'Dadas las restricciones de tiempo, me enfoqué en construir el sistema mientras diseñaba, en lugar de separar ambas fases. Esto me permitió:',
+      's4.l1':'Incrementar la velocidad con el tiempo (de 2 a 6 pantallas por día)','s4.l2':'Mantener consistencia en todas las pantallas','s4.l3':'Reducir decisiones de diseño reutilizando componentes',
+      's5.h':'Construyendo el Sistema de Diseño','s5.p':'Definí un sistema basado en componentes siguiendo los principios de Atomic Design, incluyendo:',
+      's5.l1':'Jerarquía de botones y CTAs','s5.l2':'Elementos de formulario e inputs','s5.l3':'Cards y módulos de contenido','s5.l4':'Filtros y etiquetas','s5.l5':'Patrones de navegación',
+      's5.note':'Este sistema aseguró consistencia y escalabilidad en toda la plataforma.',
+      's6.h':'Solución Final','s6.p':'El producto final entregó una experiencia consistente y escalable en todas las páginas, mejorando la jerarquía de contenido, usabilidad y alineación con la marca.',
+      's7.h':'Experiencia Mobile','s7.p':'Se prestó especial atención a la usabilidad móvil, priorizando legibilidad, simplicidad de navegación y CTAs claros.',
+      's8.h':'Impacto','stat1':'Pantallas entregadas','stat2':'Incremento en velocidad','stat3':'Sistema escalable creado',
+      's8.l1':'Entregué 30+ pantallas bajo deadlines ajustados','s8.l2':'Incrementé la velocidad de diseño 2x a través de la sistematización','s8.l3':'Establecí una base de diseño escalable para crecimiento futuro','s8.l4':'Mejoré la consistencia visual en toda la plataforma',
+      'img.placeholder':'Agrega imagen aquí · assets/',
+    }
+  };
+  let currentLang = localStorage.getItem('lang') || 'en';
+  function applyLang(lang) { const t=dict[lang]; document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(t[k]!==undefined) el.innerHTML=t[k]; }); document.documentElement.lang=lang; document.getElementById('btn-en').classList.toggle('active',lang==='en'); document.getElementById('btn-es').classList.toggle('active',lang==='es'); }
+  function setLang(lang) { if(lang===currentLang) return; document.body.classList.add('lang-switching'); setTimeout(()=>{ currentLang=lang; localStorage.setItem('lang',lang); applyLang(lang); document.body.classList.remove('lang-switching'); },200); }
+  function openLightbox(src,alt) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox-img').alt=alt||''; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; }
+  document.querySelectorAll('.cs-img-wrap img').forEach(img=>{ img.parentElement.addEventListener('click',()=>openLightbox(img.src,img.alt)); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLightbox(); });
+  const observer=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } }); },{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  if(currentLang==='es') applyLang('es');
+</script>
+</body>
+</html>

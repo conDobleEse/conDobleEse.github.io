@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Songtastic — Marco Jasso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #111111; --bg2: #171717; --bg3: #1e1e1e;
+      --border: rgba(255,255,255,0.08); --text: #f0ede8;
+      --muted: #888; --accent: #c8f060;
+      --font-display: 'Syne', sans-serif; --font-body: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.65; overflow-x: hidden; }
+
+    /* i18n */
+    [data-i18n] { transition: opacity 0.2s ease; }
+    body.lang-switching [data-i18n] { opacity: 0; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 48px;
+      background: rgba(17,17,17,0.88); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.5px; color: var(--text); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 32px; }
+    .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--text); }
+    .lang-toggle { display: flex; align-items: center; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .lang-btn { padding: 6px 13px; font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: var(--muted); background: none; border: none; cursor: pointer; transition: color 0.2s, background 0.2s; line-height: 1; }
+    .lang-btn.active { background: var(--accent); color: #111; }
+    .lang-btn:not(.active):hover { color: var(--text); }
+    .lang-sep { width: 1px; height: 16px; background: var(--border); flex-shrink: 0; }
+
+    /* HERO */
+    .cs-hero {
+      margin-top: 65px;
+      width: 100%; height: 70vh; min-height: 400px;
+      background: #1a0a2e;
+      overflow: hidden; position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cs-hero img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .cs-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--bg) 100%);
+    }
+
+    /* CONTENT */
+    .cs-wrap { max-width: 780px; margin: 0 auto; padding: 64px 48px 80px; }
+
+    .cs-title-block { margin-bottom: 48px; }
+    .cs-label { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .cs-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(32px, 5vw, 56px); letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px; }
+    .cs-subtitle { font-size: clamp(17px, 2vw, 20px); font-weight: 300; color: var(--muted); line-height: 1.5; margin-bottom: 40px; }
+
+    .cs-meta { display: flex; gap: 40px; flex-wrap: wrap; padding: 28px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 64px; }
+    .cs-meta-item { display: flex; flex-direction: column; gap: 5px; }
+    .cs-meta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+    .cs-meta-val { font-size: 15px; color: var(--text); font-weight: 400; }
+
+    /* SECTIONS */
+    .cs-section { margin-bottom: 72px; }
+    .cs-section hr { border: none; border-top: 1px solid var(--border); margin: 64px 0; }
+
+    h2.cs-h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.8px; margin-bottom: 20px; }
+    h3.cs-h3 { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: -0.3px; color: var(--accent); margin-bottom: 14px; }
+    .cs-p { font-size: 16px; line-height: 1.8; color: var(--muted); margin-bottom: 18px; }
+    .cs-p strong { color: var(--text); font-weight: 500; }
+
+    .cs-list { list-style: none; margin: 0 0 20px; padding: 0; }
+    .cs-list li { font-size: 15px; color: var(--muted); line-height: 1.7; padding: 6px 0 6px 20px; position: relative; }
+    .cs-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+    /* IMAGES */
+    .cs-img-wrap {
+      width: 100%; margin: 32px 0;
+      border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      cursor: zoom-in;
+      position: relative;
+      transition: border-color 0.25s;
+    }
+    .cs-img-wrap:hover { border-color: rgba(200,240,96,0.3); }
+    .cs-img-wrap img { width: 100%; height: auto; display: block; transition: transform 0.4s ease; }
+    .cs-img-wrap:hover img { transform: scale(1.01); }
+    .cs-img-caption { font-size: 12px; color: var(--muted); text-align: center; padding: 10px 16px 14px; border-top: 1px solid var(--border); background: var(--bg2); }
+
+    /* VIDEO */
+    .cs-video-wrap { width: 100%; margin: 32px 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 16/9; }
+    .cs-video-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* IMAGE PLACEHOLDER */
+    .cs-img-placeholder {
+      width: 100%; margin: 32px 0; border-radius: 10px;
+      background: var(--bg3); border: 1px dashed rgba(200,240,96,0.2);
+      aspect-ratio: 16/9; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      color: rgba(136,136,136,0.4); font-size: 13px; font-style: italic;
+    }
+    .cs-img-placeholder svg { opacity: 0.3; }
+
+    /* HIGHLIGHT BOX */
+    .cs-highlight {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px; padding: 24px 28px; margin: 28px 0;
+    }
+    .cs-highlight p { font-size: 15px; color: var(--muted); margin: 0; line-height: 1.7; }
+    .cs-highlight p + p { margin-top: 10px; }
+
+    /* LEARNINGS GRID */
+    .cs-learnings { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+    .cs-learning-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 20px 22px; }
+    .cs-learning-item p { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    /* AUTHOR FOOTER */
+    .cs-author {
+      display: flex; align-items: center; gap: 20px;
+      padding: 40px 0 0; margin-top: 64px;
+      border-top: 1px solid var(--border);
+    }
+    .cs-author-photo { width: 56px; height: 56px; border-radius: 50%; background: var(--bg3); overflow: hidden; flex-shrink: 0; border: 2px solid var(--border); }
+    .cs-author-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .cs-author-name { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin-bottom: 3px; }
+    .cs-author-role { font-size: 14px; color: var(--muted); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.92); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+      cursor: zoom-out; padding: 24px;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img { max-width: 100%; max-height: 90vh; border-radius: 8px; object-fit: contain; box-shadow: 0 32px 80px rgba(0,0,0,0.6); }
+    .lightbox-close {
+      position: absolute; top: 24px; right: 24px;
+      background: var(--bg2); border: 1px solid var(--border);
+      color: var(--muted); width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 18px; transition: color 0.2s, border-color 0.2s;
+    }
+    .lightbox-close:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; } .reveal-delay-2 { transition-delay: 0.2s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .cs-wrap { padding: 40px 24px 60px; }
+      .cs-learnings { grid-template-columns: 1fr; }
+      .cs-meta { gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Marco<span>.</span></a>
+  <div class="nav-right">
+    <a href="index.html#work" class="nav-back">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i18n="nav.back">Back</span>
+    </a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <div class="lang-sep"></div>
+      <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <img src="assets/thumb-songtastic.jpg" alt="Songtastic" onerror="this.style.display='none'" />
+  <div class="cs-hero-overlay"></div>
+</div>
+
+<!-- CONTENT -->
+<div class="cs-wrap">
+
+  <div class="cs-title-block reveal">
+    <p class="cs-label">Songtastic</p>
+    <h1 class="cs-title" data-i18n="title">Turning a Basic Feature into a Gamified Experience</h1>
+    <p class="cs-subtitle" data-i18n="subtitle">Redesigning a music guessing game to improve engagement and unlock monetization</p>
+    <div class="cs-meta">
+      <div class="cs-meta-item">
+        <span class="cs-meta-label" data-i18n="meta.role.label">Role</span>
+        <span class="cs-meta-val" data-i18n="meta.role.val">Lead Product Designer</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label" data-i18n="meta.type.label">Type</span>
+        <span class="cs-meta-val">Mobile App</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label" data-i18n="meta.focus.label">Focus</span>
+        <span class="cs-meta-val">Gamification · Engagement</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s1.h">Overview</h2>
+    <p class="cs-p" data-i18n="s1.p1">"Songtastic" is a gamified feature within a music streaming app where users guess songs to win rewards.</p>
+    <p class="cs-p" data-i18n="s1.p2">Despite being an early and imperfect implementation, the feature showed strong user engagement and quickly became a valuable opportunity for <strong>brand-sponsored campaigns</strong>, including rewards like concert and festival tickets.</p>
+    <p class="cs-p" data-i18n="s1.p3">This project focused on redesigning the experience to make it more intuitive, engaging, and scalable.</p>
+  </div>
+  <hr class="reveal">
+
+  <!-- Problem -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s2.h">The Problem</h2>
+    <p class="cs-p" data-i18n="s2.p">The original experience worked — but had clear limitations:</p>
+    <ul class="cs-list">
+      <li data-i18n="s2.l1">Confusing and incomplete user flow</li>
+      <li data-i18n="s2.l2">Weak visual identity (did not feel like a game)</li>
+      <li data-i18n="s2.l3">Lack of feedback during gameplay</li>
+      <li data-i18n="s2.l4">No clear structure for brand integrations</li>
+    </ul>
+    <div class="cs-highlight">
+      <p data-i18n="s2.note">As a result, the feature had potential, but was not fully optimized for engagement or monetization.</p>
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <!-- Current Experience -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s3.h">Current Experience</h2>
+    <div class="cs-img-wrap">
+      <img src="assets/songtastic_01.png" alt="Current experience" />
+    </div>
+    <p class="cs-p" data-i18n="s3.p">The feature lacked hierarchy, guidance, and emotional feedback — key elements for any successful game-like experience.</p>
+  </div>
+  <hr class="reveal">
+
+  <!-- Goals -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s4.h">Goals</h2>
+    <ul class="cs-list">
+      <li data-i18n="s4.l1">Improve usability and flow clarity</li>
+      <li data-i18n="s4.l2">Create a more engaging, game-like experience</li>
+      <li data-i18n="s4.l3">Introduce clear feedback and progression</li>
+      <li data-i18n="s4.l4">Enable scalable brand sponsorship integrations</li>
+    </ul>
+  </div>
+  <hr class="reveal">
+
+  <!-- My Role -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s5.h">My Role</h2>
+    <p class="cs-p" data-i18n="s5.p">I led the redesign end-to-end:</p>
+    <ul class="cs-list">
+      <li data-i18n="s5.l1">Defined user flows</li>
+      <li data-i18n="s5.l2">Created wireframes</li>
+      <li data-i18n="s5.l3">Designed high-fidelity UI</li>
+      <li data-i18n="s5.l4">Built interactive prototypes with motion and sound</li>
+      <li data-i18n="s5.l5">Developed scalable UI for sponsorship integrations</li>
+    </ul>
+  </div>
+  <hr class="reveal">
+
+  <!-- Redefining -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s6.h">Redefining the Experience</h2>
+    <div class="cs-img-wrap">
+      <img src="assets/songtastic_02.png" alt="Redefining the experience" />
+    </div>
+    <p class="cs-p" data-i18n="s6.p">I restructured the experience by introducing missing steps and improving clarity across the full journey:</p>
+    <div class="cs-highlight">
+      <p><strong>Entry → Genre selection → Gameplay → Feedback → Results</strong></p>
+      <p data-i18n="s6.note">This created a more guided and engaging experience.</p>
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <!-- Structuring -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s7.h">Structuring the Solution</h2>
+    <div class="cs-img-wrap">
+      <img src="assets/songtastic_03.png" alt="Current experience" />
+    </div>
+    <div class="cs-img-wrap">
+      <img src="assets/songtastic_04.png" alt="Current experience" />
+    </div>
+    <p class="cs-p" data-i18n="s7.p">Wireframes helped define the structure and validate new interaction points before moving into visual design.</p>
+  </div>
+  <hr class="reveal">
+
+  <!-- Visual Direction -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s8.h">Visual Direction</h2>
+    <div class="cs-img-wrap">
+      <img src="assets/songtastic_05.png" alt="Current experience" />
+    </div>
+    <p class="cs-p" data-i18n="s8.p">I explored a more expressive and game-oriented visual direction:</p>
+    <ul class="cs-list">
+      <li data-i18n="s8.l1">Strong contrast and bold UI</li>
+      <li data-i18n="s8.l2">Clear feedback states</li>
+      <li data-i18n="s8.l3">More immersive and playful interactions</li>
+    </ul>
+    <p class="cs-p" data-i18n="s8.note">The goal was to make the feature feel like an actual game, not just an extension of the app.</p>
+  </div>
+  <hr class="reveal">
+
+  <!-- Before vs After -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s9.h">Before vs After</h2>
+    <div class="cs-img-wrap">
+      <img src="assets/songtastic_06.png" alt="Current experience" />
+    </div>
+    <p class="cs-p" data-i18n="s9.p">The redesign improves:</p>
+    <ul class="cs-list">
+      <li data-i18n="s9.l1"><strong>Clarity</strong> → clearer steps and guidance</li>
+      <li data-i18n="s9.l2"><strong>Engagement</strong> → stronger visual feedback</li>
+      <li data-i18n="s9.l3"><strong>Focus</strong> → better hierarchy and interaction cues</li>
+    </ul>
+  </div>
+  <hr class="reveal">
+
+  <!-- Final Direction -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s10.h">Final Direction</h2>
+    <div class="cs-img-wrap">
+      <img src="assets/songtastic_07.png" alt="Current experience" />
+    </div>
+    <p class="cs-p" data-i18n="s10.p">The final version evolved into a more restrained, brand-aligned visual style while preserving the core experience improvements.</p>
+  </div>
+  <hr class="reveal">
+
+  <!-- Monetization -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s11.h">Designing for Monetization</h2>
+    <div class="cs-img-wrap">
+      <img src="assets/songtastic_08.png" alt="Current experience" />
+    </div>
+    <p class="cs-p" data-i18n="s11.p">A key part of the redesign was enabling brand-sponsored experiences. The system was designed to:</p>
+    <ul class="cs-list">
+      <li data-i18n="s11.l1">Integrate brand identity seamlessly</li>
+      <li data-i18n="s11.l2">Support promotional campaigns</li>
+      <li data-i18n="s11.l3">Maintain usability while introducing monetization</li>
+    </ul>
+  </div>
+  <hr class="reveal">
+
+  <!-- Outcome -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s12.h">Outcome</h2>
+    <p class="cs-p" data-i18n="s12.p">The redesign was validated internally and prepared for release, establishing a scalable foundation for:</p>
+    <ul class="cs-list">
+      <li data-i18n="s12.l1">Gamified engagement</li>
+      <li data-i18n="s12.l2">Brand partnerships</li>
+      <li data-i18n="s12.l3">Improved user experience</li>
+    </ul>
+    <!-- YouTube embed placeholder -->
+    <div class="cs-video-wrap">
+      <iframe src="https://www.youtube.com/embed/KJqfrlXEuDI?si=st1eH5PrM-ugXUAQ" title="Songtastic" allowfullscreen></iframe>
+    </div>
+    <p class="cs-p" style="font-size:12px;color:rgba(136,136,136,0.5);font-style:italic;" data-i18n="video.note">Replace VIDEO_ID_HERE in the source code with your YouTube video ID.</p>
+  </div>
+  <hr class="reveal">
+
+  <!-- Key Learnings -->
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s13.h">Key Learnings</h2>
+    <div class="cs-learnings">
+      <div class="cs-learning-item"><p data-i18n="s13.l1">Structure is critical for engagement in gamified experiences</p></div>
+      <div class="cs-learning-item"><p data-i18n="s13.l2">Visual feedback drives user satisfaction</p></div>
+      <div class="cs-learning-item"><p data-i18n="s13.l3">Monetization must feel integrated, not intrusive</p></div>
+      <div class="cs-learning-item"><p data-i18n="s13.l4">Balancing creativity and business constraints is essential</p></div>
+    </div>
+  </div>
+
+  <!-- Author Footer -->
+  <div class="cs-author reveal">
+    <div class="cs-author-photo">
+      <img src="assets/photo.jpg" alt="Marco Jasso" onerror="this.style.display='none'" />
+    </div>
+    <div>
+      <p class="cs-author-name">Marco Jasso</p>
+      <p class="cs-author-role">Product Designer</p>
+    </div>
+  </div>
+
+</div><!-- /cs-wrap -->
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+  /* i18n */
+  const dict = {
+    en: {
+      'nav.back': 'Back',
+      'title': 'Turning a Basic Feature into a Gamified Experience',
+      'subtitle': 'Redesigning a music guessing game to improve engagement and unlock monetization',
+      'meta.role.label': 'Role', 'meta.role.val': 'Lead Product Designer',
+      'meta.type.label': 'Type', 'meta.focus.label': 'Focus',
+      's1.h': 'Overview',
+      's1.p1': '"Songtastic" is a gamified feature within a music streaming app where users guess songs to win rewards.',
+      's1.p2': 'Despite being an early and imperfect implementation, the feature showed strong user engagement and quickly became a valuable opportunity for <strong>brand-sponsored campaigns</strong>, including rewards like concert and festival tickets.',
+      's1.p3': 'This project focused on redesigning the experience to make it more intuitive, engaging, and scalable.',
+      's2.h': 'The Problem', 's2.p': 'The original experience worked — but had clear limitations:',
+      's2.l1': 'Confusing and incomplete user flow', 's2.l2': 'Weak visual identity (did not feel like a game)',
+      's2.l3': 'Lack of feedback during gameplay', 's2.l4': 'No clear structure for brand integrations',
+      's2.note': 'As a result, the feature had potential, but was not fully optimized for engagement or monetization.',
+      's3.h': 'Current Experience', 's3.p': 'The feature lacked hierarchy, guidance, and emotional feedback — key elements for any successful game-like experience.',
+      's4.h': 'Goals', 's4.l1': 'Improve usability and flow clarity', 's4.l2': 'Create a more engaging, game-like experience',
+      's4.l3': 'Introduce clear feedback and progression', 's4.l4': 'Enable scalable brand sponsorship integrations',
+      's5.h': 'My Role', 's5.p': 'I led the redesign end-to-end:',
+      's5.l1': 'Defined user flows', 's5.l2': 'Created wireframes', 's5.l3': 'Designed high-fidelity UI',
+      's5.l4': 'Built interactive prototypes with motion and sound', 's5.l5': 'Developed scalable UI for sponsorship integrations',
+      's6.h': 'Redefining the Experience', 's6.p': 'I restructured the experience by introducing missing steps and improving clarity across the full journey:',
+      's6.note': 'This created a more guided and engaging experience.',
+      's7.h': 'Structuring the Solution', 's7.p': 'Wireframes helped define the structure and validate new interaction points before moving into visual design.',
+      's8.h': 'Visual Direction', 's8.p': 'I explored a more expressive and game-oriented visual direction:',
+      's8.l1': 'Strong contrast and bold UI', 's8.l2': 'Clear feedback states', 's8.l3': 'More immersive and playful interactions',
+      's8.note': 'The goal was to make the feature feel like an actual game, not just an extension of the app.',
+      's9.h': 'Before vs After', 's9.p': 'The redesign improves:',
+      's9.l1': '<strong>Clarity</strong> → clearer steps and guidance', 's9.l2': '<strong>Engagement</strong> → stronger visual feedback', 's9.l3': '<strong>Focus</strong> → better hierarchy and interaction cues',
+      's10.h': 'Final Direction', 's10.p': 'The final version evolved into a more restrained, brand-aligned visual style while preserving the core experience improvements.',
+      's11.h': 'Designing for Monetization', 's11.p': 'A key part of the redesign was enabling brand-sponsored experiences. The system was designed to:',
+      's11.l1': 'Integrate brand identity seamlessly', 's11.l2': 'Support promotional campaigns', 's11.l3': 'Maintain usability while introducing monetization',
+      's12.h': 'Outcome', 's12.p': 'The redesign was validated internally and prepared for release, establishing a scalable foundation for:',
+      's12.l1': 'Gamified engagement', 's12.l2': 'Brand partnerships', 's12.l3': 'Improved user experience',
+      's13.h': 'Key Learnings',
+      's13.l1': 'Structure is critical for engagement in gamified experiences',
+      's13.l2': 'Visual feedback drives user satisfaction',
+      's13.l3': 'Monetization must feel integrated, not intrusive',
+      's13.l4': 'Balancing creativity and business constraints is essential',
+      'img.placeholder': 'Add image here · assets/',
+      'video.note': 'Replace VIDEO_ID_HERE in the source code with your YouTube video ID.',
+    },
+    es: {
+      'nav.back': 'Volver',
+      'title': 'Convirtiendo una Función Básica en una Experiencia Gamificada',
+      'subtitle': 'Rediseñando un juego de adivinanza musical para mejorar el engagement y desbloquear la monetización',
+      'meta.role.label': 'Rol', 'meta.role.val': 'Product Designer Senior',
+      'meta.type.label': 'Tipo', 'meta.focus.label': 'Enfoque',
+      's1.h': 'Descripción general',
+      's1.p1': '"Songtastic" es una función gamificada dentro de una app de música donde los usuarios adivinan canciones para ganar premios.',
+      's1.p2': 'A pesar de ser una implementación temprana e imperfecta, la función mostró un fuerte engagement y se convirtió rápidamente en una oportunidad valiosa para <strong>campañas patrocinadas por marcas</strong>, incluyendo premios como boletos para conciertos y festivales.',
+      's1.p3': 'Este proyecto se enfocó en rediseñar la experiencia para hacerla más intuitiva, atractiva y escalable.',
+      's2.h': 'El Problema', 's2.p': 'La experiencia original funcionaba, pero tenía limitaciones claras:',
+      's2.l1': 'Flujo de usuario confuso e incompleto', 's2.l2': 'Identidad visual débil (no se sentía como un juego)',
+      's2.l3': 'Falta de retroalimentación durante el juego', 's2.l4': 'Sin estructura clara para integraciones de marca',
+      's2.note': 'Como resultado, la función tenía potencial pero no estaba optimizada para el engagement ni la monetización.',
+      's3.h': 'Experiencia Actual', 's3.p': 'La función carecía de jerarquía, guía y retroalimentación emocional — elementos clave para cualquier experiencia de juego exitosa.',
+      's4.h': 'Objetivos', 's4.l1': 'Mejorar la usabilidad y claridad del flujo', 's4.l2': 'Crear una experiencia más atractiva, similar a un juego',
+      's4.l3': 'Introducir retroalimentación clara y progresión', 's4.l4': 'Habilitar integraciones de patrocinio de marca escalables',
+      's5.h': 'Mi Rol', 's5.p': 'Lideré el rediseño de principio a fin:',
+      's5.l1': 'Definí flujos de usuario', 's5.l2': 'Creé wireframes', 's5.l3': 'Diseñé UI de alta fidelidad',
+      's5.l4': 'Construí prototipos interactivos con motion y sonido', 's5.l5': 'Desarrollé UI escalable para integraciones de patrocinio',
+      's6.h': 'Redefiniendo la Experiencia', 's6.p': 'Reestructuré la experiencia introduciendo pasos faltantes y mejorando la claridad en todo el journey:',
+      's6.note': 'Esto creó una experiencia más guiada y atractiva.',
+      's7.h': 'Estructurando la Solución', 's7.p': 'Los wireframes ayudaron a definir la estructura y validar nuevos puntos de interacción antes de pasar al diseño visual.',
+      's8.h': 'Dirección Visual', 's8.p': 'Exploré una dirección visual más expresiva y orientada al juego:',
+      's8.l1': 'UI de alto contraste y negritas', 's8.l2': 'Estados de retroalimentación claros', 's8.l3': 'Interacciones más inmersivas y lúdicas',
+      's8.note': 'El objetivo era que la función se sintiera como un juego real, no solo una extensión de la app.',
+      's9.h': 'Antes vs Después', 's9.p': 'El rediseño mejora:',
+      's9.l1': '<strong>Claridad</strong> → pasos y guía más claros', 's9.l2': '<strong>Engagement</strong> → retroalimentación visual más fuerte', 's9.l3': '<strong>Enfoque</strong> → mejor jerarquía e indicadores de interacción',
+      's10.h': 'Dirección Final', 's10.p': 'La versión final evolucionó hacia un estilo visual más contenido y alineado con la marca, preservando las mejoras centrales de la experiencia.',
+      's11.h': 'Diseñando para la Monetización', 's11.p': 'Una parte clave del rediseño fue habilitar experiencias patrocinadas por marcas. El sistema fue diseñado para:',
+      's11.l1': 'Integrar la identidad de marca de forma fluida', 's11.l2': 'Soportar campañas promocionales', 's11.l3': 'Mantener la usabilidad mientras se introduce monetización',
+      's12.h': 'Resultado', 's12.p': 'El rediseño fue validado internamente y preparado para lanzamiento, estableciendo una base escalable para:',
+      's12.l1': 'Engagement gamificado', 's12.l2': 'Asociaciones con marcas', 's12.l3': 'Experiencia de usuario mejorada',
+      's13.h': 'Aprendizajes Clave',
+      's13.l1': 'La estructura es crítica para el engagement en experiencias gamificadas',
+      's13.l2': 'La retroalimentación visual impulsa la satisfacción del usuario',
+      's13.l3': 'La monetización debe sentirse integrada, no intrusiva',
+      's13.l4': 'Equilibrar creatividad y restricciones de negocio es esencial',
+      'img.placeholder': 'Agrega imagen aquí · assets/',
+      'video.note': 'Reemplaza VIDEO_ID_HERE en el código fuente con el ID de tu video de YouTube.',
+    }
+  };
+
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    const t = dict[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    document.documentElement.lang = lang;
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+  }
+
+  function setLang(lang) {
+    if (lang === currentLang) return;
+    document.body.classList.add('lang-switching');
+    setTimeout(() => {
+      currentLang = lang; localStorage.setItem('lang', lang);
+      applyLang(lang); document.body.classList.remove('lang-switching');
+    }, 200);
+  }
+
+  /* Lightbox */
+  function openLightbox(src, alt) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox-img').alt = alt || '';
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.cs-img-wrap img').forEach(img => {
+    img.parentElement.addEventListener('click', () => openLightbox(img.src, img.alt));
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  /* Scroll reveal */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  if (currentLang === 'es') applyLang('es');
+</script>
+</body>
+</html>

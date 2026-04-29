@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mazati Reserve — Marco Jasso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#111111;--bg2:#171717;--bg3:#1e1e1e;--border:rgba(255,255,255,0.08);--text:#f0ede8;--muted:#888;--accent:#c8f060;--font-display:'Syne',sans-serif;--font-body:'DM Sans',sans-serif; }
+    html{scroll-behavior:smooth;}body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.65;overflow-x:hidden;}
+    [data-i18n]{transition:opacity 0.2s ease;}body.lang-switching [data-i18n]{opacity:0;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:20px 48px;background:rgba(17,17,17,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-0.5px;color:var(--text);text-decoration:none;}.nav-logo span{color:var(--accent);}
+    .nav-right{display:flex;align-items:center;gap:32px;}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;text-decoration:none;transition:color 0.2s;}.nav-back:hover{color:var(--text);}
+    .lang-toggle{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+    .lang-btn{padding:6px 13px;font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.08em;color:var(--muted);background:none;border:none;cursor:pointer;transition:color 0.2s,background 0.2s;line-height:1;}.lang-btn.active{background:var(--accent);color:#111;}.lang-btn:not(.active):hover{color:var(--text);}
+    .lang-sep{width:1px;height:16px;background:var(--border);flex-shrink:0;}
+    .cs-hero{margin-top:65px;width:100%;height:70vh;min-height:400px;background:#1a1812;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
+    .cs-hero img{width:100%;height:100%;object-fit:cover;object-position:center;}
+    .cs-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,var(--bg) 100%);}
+    .cs-wrap{max-width:780px;margin:0 auto;padding:64px 48px 80px;}
+    .cs-title-block{margin-bottom:48px;}.cs-label{font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+    .cs-title{font-family:var(--font-display);font-weight:800;font-size:clamp(32px,5vw,56px);letter-spacing:-2px;line-height:1.05;margin-bottom:16px;}
+    .cs-subtitle{font-size:clamp(17px,2vw,20px);font-weight:300;color:var(--muted);line-height:1.5;margin-bottom:40px;}
+    .cs-meta{display:flex;gap:40px;flex-wrap:wrap;padding:28px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:64px;}
+    .cs-meta-item{display:flex;flex-direction:column;gap:5px;}.cs-meta-label{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);}.cs-meta-val{font-size:15px;color:var(--text);font-weight:400;}
+    .cs-section{margin-bottom:72px;}.cs-section hr{border:none;border-top:1px solid var(--border);margin:64px 0;}
+    h2.cs-h2{font-family:var(--font-display);font-weight:700;font-size:clamp(22px,3vw,30px);letter-spacing:-0.8px;margin-bottom:20px;}
+    .cs-p{font-size:16px;line-height:1.8;color:var(--muted);margin-bottom:18px;}.cs-p strong{color:var(--text);font-weight:500;}
+    .cs-list{list-style:none;margin:0 0 20px;padding:0;}.cs-list li{font-size:15px;color:var(--muted);line-height:1.7;padding:6px 0 6px 20px;position:relative;}.cs-list li::before{content:'—';position:absolute;left:0;color:var(--accent);font-weight:700;}
+    .cs-img-wrap{width:100%;margin:32px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--bg3);cursor:zoom-in;position:relative;transition:border-color 0.25s;}.cs-img-wrap:hover{border-color:rgba(200,240,96,0.3);}.cs-img-wrap img{width:100%;height:auto;display:block;transition:transform 0.4s ease;}.cs-img-wrap:hover img{transform:scale(1.01);}
+    .cs-img-caption{font-size:12px;color:var(--muted);text-align:center;padding:10px 16px 14px;border-top:1px solid var(--border);background:var(--bg2);}
+    .cs-img-placeholder{width:100%;margin:32px 0;border-radius:10px;background:var(--bg3);border:1px dashed rgba(200,240,96,0.2);aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:rgba(136,136,136,0.4);font-size:13px;font-style:italic;}.cs-img-placeholder svg{opacity:0.3;}
+    .cs-highlight{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:24px 28px;margin:28px 0;}.cs-highlight p{font-size:15px;color:var(--muted);margin:0;line-height:1.7;}.cs-highlight p+p{margin-top:10px;}
+    .cs-intent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0;}
+    .cs-intent-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px 18px;}
+    .cs-intent-num{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+    .cs-intent-title{font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:6px;}
+    .cs-intent-desc{font-size:13px;color:var(--muted);line-height:1.5;}
+    .cs-learnings{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;}
+    .cs-learning-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px 22px;}.cs-learning-item p{font-size:14px;color:var(--muted);line-height:1.6;margin:0;}
+    .cs-author{display:flex;align-items:center;gap:20px;padding:40px 0 0;margin-top:64px;border-top:1px solid var(--border);}
+    .cs-author-photo{width:56px;height:56px;border-radius:50%;background:var(--bg3);overflow:hidden;flex-shrink:0;border:2px solid var(--border);}.cs-author-photo img{width:100%;height:100%;object-fit:cover;object-position:top;}
+    .cs-author-name{font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:3px;}.cs-author-role{font-size:14px;color:var(--muted);}
+    .lightbox{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;cursor:zoom-out;padding:24px;}.lightbox.open{opacity:1;pointer-events:all;}
+    .lightbox img{max-width:100%;max-height:90vh;border-radius:8px;object-fit:contain;box-shadow:0 32px 80px rgba(0,0,0,0.6);}
+    .lightbox-close{position:absolute;top:24px;right:24px;background:var(--bg2);border:1px solid var(--border);color:var(--muted);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:color 0.2s,border-color 0.2s;}.lightbox-close:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}.reveal.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:768px){nav{padding:16px 20px;}.cs-wrap{padding:40px 24px 60px;}.cs-learnings{grid-template-columns:1fr;}.cs-meta{gap:24px;}.cs-intent-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Marco<span>.</span></a>
+  <div class="nav-right">
+    <a href="index.html#work" class="nav-back">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i18n="nav.back">Back</span>
+    </a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <div class="lang-sep"></div>
+      <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+</nav>
+
+<div class="cs-hero">
+  <img src="assets/thumb-mazati.jpg" alt="Mazati Reserve" onerror="this.style.display='none'" />
+  <div class="cs-hero-overlay"></div>
+</div>
+
+<div class="cs-wrap">
+
+  <div class="cs-title-block reveal">
+    <p class="cs-label">Mazati Reserve</p>
+    <h1 class="cs-title" data-i18n="title">UX Exploration</h1>
+    <p class="cs-subtitle" data-i18n="subtitle">Wireframes</p>
+    <div class="cs-meta">
+      <div class="cs-meta-item"><span class="cs-meta-label" data-i18n="meta.role.label">Role</span><span class="cs-meta-val" data-i18n="meta.role.val">UX Designer</span></div>
+      <div class="cs-meta-item"><span class="cs-meta-label" data-i18n="meta.type.label">Type</span><span class="cs-meta-val" data-i18n="meta.type.val">UX Exploration</span></div>
+      <div class="cs-meta-item"><span class="cs-meta-label" data-i18n="meta.focus.label">Focus</span><span class="cs-meta-val" data-i18n="meta.focus.val">Wireframes · Luxury Brand</span></div>
+    </div>
+  </div>
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s1.h">Overview</h2>
+    <p class="cs-p" data-i18n="s1.p1">Mazati Reserve is an eco-habitable land project located in the forest in Jalisco, México.</p>
+    <p class="cs-p" data-i18n="s1.p2">I joined the project in a rush to cover an urgent need: design a few landing page directions based on different types of search intent.</p>
+    <p class="cs-p" data-i18n="s1.p3">The scope was short, but interesting: exploring how the experience changes depending on how users arrive from Google.</p>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s2.h">The Challenge</h2>
+    <p class="cs-p" data-i18n="s2.p1">There wasn't much information at the beginning. What we knew:</p>
+    <ul class="cs-list">
+      <li data-i18n="s2.l1">It's a real estate project (land in the forest)</li>
+      <li data-i18n="s2.l2">Users arrive with different intents</li>
+      <li data-i18n="s2.l3">Very tight timeline</li>
+    </ul>
+    <div class="cs-highlight"><p data-i18n="s2.note">Main question: How should the landing page adapt depending on what the user is looking for?</p></div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s3.h">Approach</h2>
+    <p class="cs-p" data-i18n="s3.p">Instead of a single generic landing, I explored 3 directions based on search intent:</p>
+    <div class="cs-intent-grid">
+      <div class="cs-intent-card">
+        <p class="cs-intent-num">01</p>
+        <p class="cs-intent-title" data-i18n="intent1.title">Brand Search</p>
+        <p class="cs-intent-desc" data-i18n="intent1.desc">Users already know Mazati → build trust and convert</p>
+      </div>
+      <div class="cs-intent-card">
+        <p class="cs-intent-num">02</p>
+        <p class="cs-intent-title" data-i18n="intent2.title">Aspirational</p>
+        <p class="cs-intent-desc" data-i18n="intent2.desc">Users exploring lifestyle → more emotional and visual</p>
+      </div>
+      <div class="cs-intent-card">
+        <p class="cs-intent-num">03</p>
+        <p class="cs-intent-title" data-i18n="intent3.title">Rational Search</p>
+        <p class="cs-intent-desc" data-i18n="intent3.desc">Users comparing options → clear benefits and differentiation</p>
+      </div>
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s4.h">What I Did</h2>
+    <ul class="cs-list">
+      <li data-i18n="s4.l1">Quick UX + market research</li>
+      <li data-i18n="s4.l2">Defined structure based on search intent</li>
+      <li data-i18n="s4.l3">Created wireframes (mobile &amp; desktop)</li>
+      <li data-i18n="s4.l4">Wrote initial copy to support each direction</li>
+      <li data-i18n="s4.l5">One iteration with the team</li>
+    </ul>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s5.h">Wireframes — Early Exploration</h2>
+    <p class="cs-p" data-i18n="s5.p">Focused on structure and content priority</p>
+    <div class="cs-img-wrap">
+      <img src="assets/mazati_01.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s6.h">More Defined Wireframes</h2>
+    <p class="cs-p" data-i18n="s6.p">Better hierarchy, clearer sections, stronger CTAs</p>
+    <div class="cs-img-wrap">
+      <img src="assets/mazati_02.png" alt="Current experience" />
+    </div><div class="cs-img-wrap">
+      <img src="assets/mazati_03.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s7.h">Refined Version (Before Handoff)</h2>
+    <p class="cs-p" data-i18n="s7.p">More polished layout and responsive thinking</p>
+    <div class="cs-img-wrap">
+      <img src="assets/mazati_04.png" alt="Current experience" />
+    </div><div class="cs-img-wrap">
+      <img src="assets/mazati_05.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s8.h">Key Takeaway</h2>
+    <p class="cs-p" data-i18n="s8.p">Even though it was a short project, it helped me:</p>
+    <div class="cs-learnings">
+      <div class="cs-learning-item"><p data-i18n="s8.l1">Think in terms of search intent-driven UX</p></div>
+      <div class="cs-learning-item"><p data-i18n="s8.l2">Make decisions with limited information</p></div>
+      <div class="cs-learning-item"><p data-i18n="s8.l3">Move fast and iterate quickly</p></div>
+      <div class="cs-learning-item"><p data-i18n="s8.l4">Bring direction with limited time and context</p></div>
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s9.h">What Happened Next</h2>
+    <p class="cs-p" data-i18n="s9.p1">The project continued evolving with more inputs and assets. The final design changed significantly and was handled by another designer.</p>
+    <p class="cs-p" data-i18n="s9.p2">My contribution was focused on:</p>
+    <ul class="cs-list">
+      <li data-i18n="s9.l1">Exploration</li>
+      <li data-i18n="s9.l2">Wireframes</li>
+      <li data-i18n="s9.l3">Some minor animation support later</li>
+    </ul>
+    <div class="cs-highlight">
+      <p data-i18n="s9.note">Not a long or perfect project, but one where you need to bring direction with limited time and context. And that's where good UX thinking really matters.</p>
+    </div>
+  </div>
+
+  <div class="cs-author reveal">
+    <div class="cs-author-photo"><img src="assets/photo.jpg" alt="Marco Jasso" onerror="this.style.display='none'" /></div>
+    <div><p class="cs-author-name">Marco Jasso</p><p class="cs-author-role">Product Designer</p></div>
+  </div>
+
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+  const dict = {
+    en: {
+      'nav.back':'Back','title':'UX Exploration','subtitle':'Wireframes',
+      'meta.role.label':'Role','meta.role.val':'UX Designer','meta.type.label':'Type','meta.type.val':'UX Exploration','meta.focus.label':'Focus','meta.focus.val':'Wireframes · Luxury Brand',
+      's1.h':'Overview','s1.p1':'Mazati Reserve is an eco-habitable land project located in the forest in Jalisco, México.',
+      's1.p2':'I joined the project in a rush to cover an urgent need: design a few landing page directions based on different types of search intent.',
+      's1.p3':'The scope was short, but interesting: exploring how the experience changes depending on how users arrive from Google.',
+      's2.h':'The Challenge','s2.p1':'There wasn\'t much information at the beginning. What we knew:',
+      's2.l1':'It\'s a real estate project (land in the forest)','s2.l2':'Users arrive with different intents','s2.l3':'Very tight timeline',
+      's2.note':'Main question: How should the landing page adapt depending on what the user is looking for?',
+      's3.h':'Approach','s3.p':'Instead of a single generic landing, I explored 3 directions based on search intent:',
+      'intent1.title':'Brand Search','intent1.desc':'Users already know Mazati → build trust and convert',
+      'intent2.title':'Aspirational','intent2.desc':'Users exploring lifestyle → more emotional and visual',
+      'intent3.title':'Rational Search','intent3.desc':'Users comparing options → clear benefits and differentiation',
+      's4.h':'What I Did','s4.l1':'Quick UX + market research','s4.l2':'Defined structure based on search intent','s4.l3':'Created wireframes (mobile & desktop)','s4.l4':'Wrote initial copy to support each direction','s4.l5':'One iteration with the team',
+      's5.h':'Wireframes — Early Exploration','s5.p':'Focused on structure and content priority',
+      's6.h':'More Defined Wireframes','s6.p':'Better hierarchy, clearer sections, stronger CTAs',
+      's7.h':'Refined Version (Before Handoff)','s7.p':'More polished layout and responsive thinking',
+      's8.h':'Key Takeaway','s8.p':'Even though it was a short project, it helped me:',
+      's8.l1':'Think in terms of search intent-driven UX','s8.l2':'Make decisions with limited information','s8.l3':'Move fast and iterate quickly','s8.l4':'Bring direction with limited time and context',
+      's9.h':'What Happened Next','s9.p1':'The project continued evolving with more inputs and assets. The final design changed significantly and was handled by another designer.',
+      's9.p2':'My contribution was focused on:','s9.l1':'Exploration','s9.l2':'Wireframes','s9.l3':'Some minor animation support later',
+      's9.note':'Not a long or perfect project, but one where you need to bring direction with limited time and context. And that\'s where good UX thinking really matters.',
+      'img.placeholder':'Add image here · assets/',
+    },
+    es: {
+      'nav.back':'Volver','title':'Exploración UX','subtitle':'Wireframes',
+      'meta.role.label':'Rol','meta.role.val':'UX Designer','meta.type.label':'Tipo','meta.type.val':'Exploración UX','meta.focus.label':'Enfoque','meta.focus.val':'Wireframes · Marca de Lujo',
+      's1.h':'Descripción general','s1.p1':'Mazati Reserve es un proyecto de terrenos eco-habitables ubicado en el bosque de Jalisco, México.',
+      's1.p2':'Me uní al proyecto de urgencia para cubrir una necesidad: diseñar algunas direcciones de landing page basadas en diferentes tipos de intención de búsqueda.',
+      's1.p3':'El alcance fue corto pero interesante: explorar cómo cambia la experiencia según cómo los usuarios llegan desde Google.',
+      's2.h':'El Reto','s2.p1':'No había mucha información al inicio. Lo que sabíamos:',
+      's2.l1':'Es un proyecto inmobiliario (terrenos en el bosque)','s2.l2':'Los usuarios llegan con diferentes intenciones','s2.l3':'Timeline muy ajustado',
+      's2.note':'Pregunta central: ¿Cómo debe adaptarse el landing según lo que el usuario busca?',
+      's3.h':'Enfoque','s3.p':'En lugar de un landing genérico, exploré 3 direcciones basadas en intención de búsqueda:',
+      'intent1.title':'Búsqueda de Marca','intent1.desc':'Usuarios que ya conocen Mazati → generar confianza y convertir',
+      'intent2.title':'Aspiracional','intent2.desc':'Usuarios explorando lifestyle → más emocional y visual',
+      'intent3.title':'Búsqueda Racional','intent3.desc':'Usuarios comparando opciones → beneficios claros y diferenciación',
+      's4.h':'Lo Que Hice','s4.l1':'Research rápido de UX y mercado','s4.l2':'Definí estructura basada en intención de búsqueda','s4.l3':'Creé wireframes (mobile y desktop)','s4.l4':'Escribí copy inicial para cada dirección','s4.l5':'Una iteración con el equipo',
+      's5.h':'Wireframes — Exploración Inicial','s5.p':'Enfocado en estructura y prioridad de contenido',
+      's6.h':'Wireframes Más Definidos','s6.p':'Mejor jerarquía, secciones más claras, CTAs más fuertes',
+      's7.h':'Versión Refinada (Antes del Handoff)','s7.p':'Layout más pulido y pensamiento responsivo',
+      's8.h':'Aprendizaje Principal','s8.p':'Aunque fue un proyecto corto, me ayudó a:',
+      's8.l1':'Pensar en términos de UX guiada por intención de búsqueda','s8.l2':'Tomar decisiones con información limitada','s8.l3':'Moverme rápido e iterar velozmente','s8.l4':'Dar dirección con tiempo y contexto limitados',
+      's9.h':'Qué Pasó Después','s9.p1':'El proyecto continuó evolucionando con más insumos y assets. El diseño final cambió significativamente y fue manejado por otro diseñador.',
+      's9.p2':'Mi contribución se enfocó en:','s9.l1':'Exploración','s9.l2':'Wireframes','s9.l3':'Algo de soporte de animación menor después',
+      's9.note':'No fue un proyecto largo ni perfecto, pero es de esos donde necesitas dar dirección con tiempo y contexto limitados. Y ahí es donde el buen pensamiento UX realmente importa.',
+      'img.placeholder':'Agrega imagen aquí · assets/',
+    }
+  };
+  let currentLang = localStorage.getItem('lang') || 'en';
+  function applyLang(lang) { const t=dict[lang]; document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(t[k]!==undefined) el.innerHTML=t[k]; }); document.documentElement.lang=lang; document.getElementById('btn-en').classList.toggle('active',lang==='en'); document.getElementById('btn-es').classList.toggle('active',lang==='es'); }
+  function setLang(lang) { if(lang===currentLang) return; document.body.classList.add('lang-switching'); setTimeout(()=>{ currentLang=lang; localStorage.setItem('lang',lang); applyLang(lang); document.body.classList.remove('lang-switching'); },200); }
+  function openLightbox(src,alt) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox-img').alt=alt||''; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; }
+  document.querySelectorAll('.cs-img-wrap img').forEach(img=>{ img.parentElement.addEventListener('click',()=>openLightbox(img.src,img.alt)); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLightbox(); });
+  const observer=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } }); },{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  if(currentLang==='es') applyLang('es');
+</script>
+</body>
+</html>

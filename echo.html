@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ECHO — Marco Jasso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #111111; --bg2: #171717; --bg3: #1e1e1e;
+      --border: rgba(255,255,255,0.08); --text: #f0ede8;
+      --muted: #888; --accent: #c8f060;
+      --font-display: 'Syne', sans-serif; --font-body: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.65; overflow-x: hidden; }
+    [data-i18n] { transition: opacity 0.2s ease; }
+    body.lang-switching [data-i18n] { opacity: 0; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; background: rgba(17,17,17,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.5px; color: var(--text); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 32px; }
+    .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--text); }
+    .lang-toggle { display: flex; align-items: center; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .lang-btn { padding: 6px 13px; font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: var(--muted); background: none; border: none; cursor: pointer; transition: color 0.2s, background 0.2s; line-height: 1; }
+    .lang-btn.active { background: var(--accent); color: #111; }
+    .lang-btn:not(.active):hover { color: var(--text); }
+    .lang-sep { width: 1px; height: 16px; background: var(--border); flex-shrink: 0; }
+    .cs-hero { margin-top: 65px; width: 100%; height: 70vh; min-height: 400px; background: #e8f000; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
+    .cs-hero img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .cs-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, var(--bg) 100%); }
+    .cs-wrap { max-width: 780px; margin: 0 auto; padding: 64px 48px 80px; }
+    .cs-title-block { margin-bottom: 48px; }
+    .cs-label { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .cs-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(32px, 5vw, 56px); letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px; }
+    .cs-subtitle { font-size: clamp(17px, 2vw, 20px); font-weight: 300; color: var(--muted); line-height: 1.5; margin-bottom: 40px; }
+    .cs-meta { display: flex; gap: 40px; flex-wrap: wrap; padding: 28px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 64px; }
+    .cs-meta-item { display: flex; flex-direction: column; gap: 5px; }
+    .cs-meta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+    .cs-meta-val { font-size: 15px; color: var(--text); font-weight: 400; }
+    .cs-section { margin-bottom: 72px; }
+    .cs-section hr { border: none; border-top: 1px solid var(--border); margin: 64px 0; }
+    h2.cs-h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.8px; margin-bottom: 20px; }
+    h3.cs-h3 { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: -0.3px; color: var(--accent); margin-bottom: 14px; }
+    .cs-p { font-size: 16px; line-height: 1.8; color: var(--muted); margin-bottom: 18px; }
+    .cs-p strong { color: var(--text); font-weight: 500; }
+    .cs-list { list-style: none; margin: 0 0 20px; padding: 0; }
+    .cs-list li { font-size: 15px; color: var(--muted); line-height: 1.7; padding: 6px 0 6px 20px; position: relative; }
+    .cs-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .cs-img-wrap { width: 100%; margin: 32px 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); background: var(--bg3); cursor: zoom-in; position: relative; transition: border-color 0.25s; }
+    .cs-img-wrap:hover { border-color: rgba(200,240,96,0.3); }
+    .cs-img-wrap img { width: 100%; height: auto; display: block; transition: transform 0.4s ease; }
+    .cs-img-wrap:hover img { transform: scale(1.01); }
+    .cs-img-caption { font-size: 12px; color: var(--muted); text-align: center; padding: 10px 16px 14px; border-top: 1px solid var(--border); background: var(--bg2); }
+    .cs-video-wrap { width: 100%; margin: 32px 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 16/9; }
+    .cs-video-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+    .cs-img-placeholder { width: 100%; margin: 32px 0; border-radius: 10px; background: var(--bg3); border: 1px dashed rgba(200,240,96,0.2); aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: rgba(136,136,136,0.4); font-size: 13px; font-style: italic; }
+    .cs-img-placeholder svg { opacity: 0.3; }
+    .cs-highlight { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 24px 28px; margin: 28px 0; }
+    .cs-highlight p { font-size: 15px; color: var(--muted); margin: 0; line-height: 1.7; }
+    .cs-highlight p + p { margin-top: 10px; }
+    .cs-learnings { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+    .cs-learning-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 20px 22px; }
+    .cs-learning-item p { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0; }
+    .cs-author { display: flex; align-items: center; gap: 20px; padding: 40px 0 0; margin-top: 64px; border-top: 1px solid var(--border); }
+    .cs-author-photo { width: 56px; height: 56px; border-radius: 50%; background: var(--bg3); overflow: hidden; flex-shrink: 0; border: 2px solid var(--border); }
+    .cs-author-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .cs-author-name { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin-bottom: 3px; }
+    .cs-author-role { font-size: 14px; color: var(--muted); }
+    .lightbox { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; cursor: zoom-out; padding: 24px; }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img { max-width: 100%; max-height: 90vh; border-radius: 8px; object-fit: contain; box-shadow: 0 32px 80px rgba(0,0,0,0.6); }
+    .lightbox-close { position: absolute; top: 24px; right: 24px; background: var(--bg2); border: 1px solid var(--border); color: var(--muted); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: color 0.2s, border-color 0.2s; }
+    .lightbox-close:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (max-width: 768px) { nav { padding: 16px 20px; } .cs-wrap { padding: 40px 24px 60px; } .cs-learnings { grid-template-columns: 1fr; } .cs-meta { gap: 24px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Marco<span>.</span></a>
+  <div class="nav-right">
+    <a href="index.html#work" class="nav-back">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i18n="nav.back">Back</span>
+    </a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <div class="lang-sep"></div>
+      <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+</nav>
+
+<div class="cs-hero">
+  <img src="assets/thumb-echo.jpg" alt="ECHO" onerror="this.style.display='none'" />
+  <div class="cs-hero-overlay"></div>
+</div>
+
+<div class="cs-wrap">
+
+  <div class="cs-title-block reveal">
+    <p class="cs-label">ECHO · TREBEL ECO</p>
+    <h1 class="cs-title" data-i18n="title">Year in Review Experience</h1>
+    <p class="cs-subtitle" data-i18n="subtitle">Designing a scalable, immersive storytelling experience for millions of users.</p>
+    <div class="cs-meta">
+      <div class="cs-meta-item"><span class="cs-meta-label" data-i18n="meta.role.label">Role</span><span class="cs-meta-val" data-i18n="meta.role.val">Product Designer</span></div>
+      <div class="cs-meta-item"><span class="cs-meta-label" data-i18n="meta.type.label">Type</span><span class="cs-meta-val" data-i18n="meta.type.val">Brand Experience</span></div>
+      <div class="cs-meta-item"><span class="cs-meta-label" data-i18n="meta.focus.label">Focus</span><span class="cs-meta-val">Motion · Storytelling</span></div>
+    </div>
+  </div>
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s1.h">Overview</h2>
+    <p class="cs-p" data-i18n="s1.p1">TREBEL ECO is a "Year in Review" feature designed to transform users' listening data into a dynamic, story-driven mobile experience.</p>
+    <p class="cs-p" data-i18n="s1.p2">The goal was to create a personalized narrative that felt engaging, visually rich, and easy to share, while working within real product and development constraints.</p>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s2.h">Role &amp; Collaboration</h2>
+    <p class="cs-p" data-i18n="s2.p">This project was developed collaboratively across Brand, Product, and Engineering.</p>
+    <ul class="cs-list">
+      <li data-i18n="s2.l1">The Brand Strategist defined and refined the narrative and tone</li>
+      <li data-i18n="s2.l2">The Product Manager ensured alignment with development and timelines</li>
+      <li data-i18n="s2.l3">The Product Owner supported key decisions to maintain quality under constraints</li>
+    </ul>
+    <h3 class="cs-h3" data-i18n="s2.my.h">My role focused on:</h3>
+    <ul class="cs-list">
+      <li data-i18n="s2.ml1">Translating the initial concept into a cohesive visual system</li>
+      <li data-i18n="s2.ml2">Designing the end-to-end experience and flows</li>
+      <li data-i18n="s2.ml3">Defining motion behavior and interaction patterns</li>
+      <li data-i18n="s2.ml4">Creating scalable solutions for multiple content variations</li>
+    </ul>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s3.h">The Challenge</h2>
+    <p class="cs-p" data-i18n="s3.p1">The starting point was not a fully defined product, but a conceptual direction based on moodboards and narrative ideas.</p>
+    <p class="cs-p" data-i18n="s3.p2">The challenge was to transform this into a real experience while balancing:</p>
+    <ul class="cs-list">
+      <li data-i18n="s3.l1">Evolving content and storytelling</li>
+      <li data-i18n="s3.l2">Multiple dynamic user scenarios</li>
+      <li data-i18n="s3.l3">Strong visual identity</li>
+      <li data-i18n="s3.l4">Technical and time constraints</li>
+    </ul>
+    <div class="cs-img-wrap">
+      <img src="assets/echo_01.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s4.h">Concept &amp; Visual Direction</h2>
+    <p class="cs-p" data-i18n="s4.p1">The core concept was based on the idea of an "echo" — representing how users' listening habits resonate throughout the year.</p>
+    <p class="cs-p" data-i18n="s4.p2">This translated into a visual system inspired by:</p>
+    <ul class="cs-list">
+      <li data-i18n="s4.l1">Sound waves</li>
+      <li data-i18n="s4.l2">Light diffusion</li>
+      <li data-i18n="s4.l3">Fractal-like repetition</li>
+    </ul>
+    <div class="cs-highlight"><p data-i18n="s4.note">The intention was to create a fluid, immersive experience rather than a static sequence of screens.</p></div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s5.h">Exploration — Background System</h2>
+    <p class="cs-p" data-i18n="s5.p">To support scalability, I developed a flexible background system. AI-assisted exploration was used to:</p>
+    <ul class="cs-list">
+      <li data-i18n="s5.l1">Rapidly generate variations</li>
+      <li data-i18n="s5.l2">Maintain visual consistency</li>
+      <li data-i18n="s5.l3">Adapt to different moments and moods</li>
+    </ul>
+     <div class="cs-img-wrap">
+      <img src="assets/echo_02.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s6.h">Designing Motion</h2>
+    <p class="cs-p" data-i18n="s6.p">Motion was a key part of the experience, reinforcing the idea of "echo" through subtle, continuous movement. To communicate this clearly, I created:</p>
+    <ul class="cs-list">
+      <li data-i18n="s6.l1">A motion storyboard</li>
+      <li data-i18n="s6.l2">A reference animation prototype</li>
+    </ul>
+     <div class="cs-img-wrap">
+      <img src="assets/echo_03.png" alt="Current experience" />
+     </div>
+    <div class="cs-highlight">
+      <p data-i18n="s6.note1"><strong>iOS</strong> → partial motion implementation</p>
+      <p data-i18n="s6.note2"><strong>Android</strong> → static fallback</p>
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s7.h">Visual Language Evolution</h2>
+    <p class="cs-p" data-i18n="s7.p">Additional visual elements were developed to support storytelling across flows. The system evolved from:</p>
+    <div class="cs-highlight"><p data-i18n="s7.note">Simple line icons → to expressive, colorful 3D elements</p></div>
+     <div class="cs-img-wrap">
+      <img src="assets/echo_04.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s8.h">Experience Design — Flows</h2>
+    <p class="cs-p" data-i18n="s8.p">The experience was structured as a sequence of 12 narrative flows, each representing a key moment in the user's year. These flows needed to:</p>
+    <ul class="cs-list">
+      <li data-i18n="s8.l1">Work independently</li>
+      <li data-i18n="s8.l2">Maintain narrative continuity</li>
+      <li data-i18n="s8.l3">Support multiple content variations</li>
+    </ul>
+     <div class="cs-img-wrap">
+      <img src="assets/echo_05.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s9.h">Brand Integrations</h2>
+    <p class="cs-p" data-i18n="s9.p">During development, external brands were integrated into the experience. This required:</p>
+    <ul class="cs-list">
+      <li data-i18n="s9.l1">Designing branded moments within the flow</li>
+      <li data-i18n="s9.l2">Maintaining visual consistency</li>
+      <li data-i18n="s9.l3">Ensuring the experience still felt cohesive</li>
+    </ul>
+     <div class="cs-img-wrap">
+      <img src="assets/echo_06.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s10.h">Shareable Experience</h2>
+    <p class="cs-p" data-i18n="s10.p">Custom shareable formats were initially designed for different flows and platforms. Due to technical constraints, the final implementation relied on native screen sharing.</p>
+    <div class="cs-highlight"><p data-i18n="s10.note">This reinforced the importance of designing screens that are inherently shareable.</p></div>
+    <div class="cs-img-wrap">
+      <img src="assets/echo_07.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s11.h">Final Experience</h2>
+    <p class="cs-p" data-i18n="s11.p">The final result is a cohesive, visually rich experience that transforms user data into a narrative journey.</p>
+    <div class="cs-img-wrap">
+      <img src="assets/echo_08.png" alt="Current experience" />
+    </div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s12.h">Constraints &amp; Adaptation</h2>
+    <p class="cs-p" data-i18n="s12.p">As the project evolved, several adjustments were necessary:</p>
+    <ul class="cs-list">
+      <li data-i18n="s12.l1">Motion was simplified due to development limitations</li>
+      <li data-i18n="s12.l2">Some visual elements were adapted for performance</li>
+      <li data-i18n="s12.l3">Content and flows changed during development</li>
+    </ul>
+    <div class="cs-highlight"><p data-i18n="s12.note">Designing with flexibility was key to maintaining quality under these constraints.</p></div>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s13.h">Outcome</h2>
+    <p class="cs-p" data-i18n="s13.p1">TREBEL ECO launched in December 2025 as a fully functional Year in Review experience. The final product successfully:</p>
+    <ul class="cs-list">
+      <li data-i18n="s13.l1">Delivered a personalized narrative</li>
+      <li data-i18n="s13.l2">Supported multiple content variations</li>
+      <li data-i18n="s13.l3">Maintained a strong visual identity</li>
+      <li data-i18n="s13.l4">Enabled branded integrations</li>
+    </ul>
+    <div class="cs-video-wrap">
+      <iframe src="https://www.youtube.com/embed/FptsdXiGjW4?si=4MzHHSzQY2vBUbca" title="TREBEL ECO" allowfullscreen></iframe>
+    </div>
+    <p class="cs-p" style="font-size:12px;color:rgba(136,136,136,0.5);font-style:italic;" data-i18n="video.note">Replace VIDEO_ID_HERE in the source code with your YouTube video ID.</p>
+  </div>
+  <hr class="reveal">
+
+  <div class="cs-section reveal">
+    <h2 class="cs-h2" data-i18n="s14.h">Key Learnings</h2>
+    <div class="cs-learnings">
+      <div class="cs-learning-item"><p data-i18n="s14.l1">Designing for scale requires systems, not screens</p></div>
+      <div class="cs-learning-item"><p data-i18n="s14.l2">Motion should support clarity, not compete with content</p></div>
+      <div class="cs-learning-item"><p data-i18n="s14.l3">Personalized storytelling needs flexible visual rules</p></div>
+      <div class="cs-learning-item"><p data-i18n="s14.l4">Constraints are part of the design process, not blockers</p></div>
+    </div>
+  </div>
+
+  <div class="cs-author reveal">
+    <div class="cs-author-photo"><img src="assets/photo.jpg" alt="Marco Jasso" onerror="this.style.display='none'" /></div>
+    <div><p class="cs-author-name">Marco Jasso</p><p class="cs-author-role">Product Designer</p></div>
+  </div>
+
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+  const dict = {
+    en: {
+      'nav.back':'Back','title':'Year in Review Experience','subtitle':'Designing a scalable, immersive storytelling experience for millions of users.',
+      'meta.role.label':'Role','meta.role.val':'Product Designer','meta.type.label':'Type','meta.type.val':'Brand Experience','meta.focus.label':'Focus',
+      's1.h':'Overview','s1.p1':'TREBEL ECO is a "Year in Review" feature designed to transform users\' listening data into a dynamic, story-driven mobile experience.',
+      's1.p2':'The goal was to create a personalized narrative that felt engaging, visually rich, and easy to share, while working within real product and development constraints.',
+      's2.h':'Role & Collaboration','s2.p':'This project was developed collaboratively across Brand, Product, and Engineering.',
+      's2.l1':'The Brand Strategist defined and refined the narrative and tone','s2.l2':'The Product Manager ensured alignment with development and timelines','s2.l3':'The Product Owner supported key decisions to maintain quality under constraints',
+      's2.my.h':'My role focused on:','s2.ml1':'Translating the initial concept into a cohesive visual system','s2.ml2':'Designing the end-to-end experience and flows','s2.ml3':'Defining motion behavior and interaction patterns','s2.ml4':'Creating scalable solutions for multiple content variations',
+      's3.h':'The Challenge','s3.p1':'The starting point was not a fully defined product, but a conceptual direction based on moodboards and narrative ideas.','s3.p2':'The challenge was to transform this into a real experience while balancing:',
+      's3.l1':'Evolving content and storytelling','s3.l2':'Multiple dynamic user scenarios','s3.l3':'Strong visual identity','s3.l4':'Technical and time constraints',
+      's4.h':'Concept & Visual Direction','s4.p1':'The core concept was based on the idea of an "echo" — representing how users\' listening habits resonate throughout the year.','s4.p2':'This translated into a visual system inspired by:',
+      's4.l1':'Sound waves','s4.l2':'Light diffusion','s4.l3':'Fractal-like repetition','s4.note':'The intention was to create a fluid, immersive experience rather than a static sequence of screens.',
+      's5.h':'Exploration — Background System','s5.p':'To support scalability, I developed a flexible background system. AI-assisted exploration was used to:',
+      's5.l1':'Rapidly generate variations','s5.l2':'Maintain visual consistency','s5.l3':'Adapt to different moments and moods',
+      's6.h':'Designing Motion','s6.p':'Motion was a key part of the experience, reinforcing the idea of "echo" through subtle, continuous movement. To communicate this clearly, I created:',
+      's6.l1':'A motion storyboard','s6.l2':'A reference animation prototype','s6.note1':'<strong>iOS</strong> → partial motion implementation','s6.note2':'<strong>Android</strong> → static fallback',
+      's7.h':'Visual Language Evolution','s7.p':'Additional visual elements were developed to support storytelling across flows. The system evolved from:','s7.note':'Simple line icons → to expressive, colorful 3D elements',
+      's8.h':'Experience Design — Flows','s8.p':'The experience was structured as a sequence of 12 narrative flows, each representing a key moment in the user\'s year. These flows needed to:',
+      's8.l1':'Work independently','s8.l2':'Maintain narrative continuity','s8.l3':'Support multiple content variations',
+      's9.h':'Brand Integrations','s9.p':'During development, external brands were integrated into the experience. This required:',
+      's9.l1':'Designing branded moments within the flow','s9.l2':'Maintaining visual consistency','s9.l3':'Ensuring the experience still felt cohesive',
+      's10.h':'Shareable Experience','s10.p':'Custom shareable formats were initially designed for different flows and platforms. Due to technical constraints, the final implementation relied on native screen sharing.',
+      's10.note':'This reinforced the importance of designing screens that are inherently shareable.',
+      's11.h':'Final Experience','s11.p':'The final result is a cohesive, visually rich experience that transforms user data into a narrative journey.',
+      's12.h':'Constraints & Adaptation','s12.p':'As the project evolved, several adjustments were necessary:',
+      's12.l1':'Motion was simplified due to development limitations','s12.l2':'Some visual elements were adapted for performance','s12.l3':'Content and flows changed during development',
+      's12.note':'Designing with flexibility was key to maintaining quality under these constraints.',
+      's13.h':'Outcome','s13.p1':'TREBEL ECO launched in December 2025 as a fully functional Year in Review experience. The final product successfully:',
+      's13.l1':'Delivered a personalized narrative','s13.l2':'Supported multiple content variations','s13.l3':'Maintained a strong visual identity','s13.l4':'Enabled branded integrations',
+      's14.h':'Key Learnings','s14.l1':'Designing for scale requires systems, not screens','s14.l2':'Motion should support clarity, not compete with content','s14.l3':'Personalized storytelling needs flexible visual rules','s14.l4':'Constraints are part of the design process, not blockers',
+      'img.placeholder':'Add image here · assets/','video.note':'Replace VIDEO_ID_HERE in the source code with your YouTube video ID.',
+    },
+    es: {
+      'nav.back':'Volver','title':'Resumen del Año — Experiencia Interactiva','subtitle':'Diseñando una experiencia de storytelling inmersiva y escalable para millones de usuarios.',
+      'meta.role.label':'Rol','meta.role.val':'Product Designer','meta.type.label':'Tipo','meta.type.val':'Experiencia de Marca','meta.focus.label':'Enfoque',
+      's1.h':'Descripción general','s1.p1':'TREBEL ECO es una función de "Resumen del Año" diseñada para transformar los datos de escucha de los usuarios en una experiencia móvil dinámica basada en storytelling.',
+      's1.p2':'El objetivo era crear una narrativa personalizada que se sintiera atractiva, visualmente rica y fácil de compartir, dentro de las restricciones reales del producto y desarrollo.',
+      's2.h':'Rol y Colaboración','s2.p':'Este proyecto fue desarrollado en colaboración entre Brand, Product e Ingeniería.',
+      's2.l1':'El Brand Strategist definió y refinó la narrativa y el tono','s2.l2':'El Product Manager aseguró la alineación con desarrollo y tiempos','s2.l3':'El Product Owner apoyó decisiones clave para mantener la calidad bajo restricciones',
+      's2.my.h':'Mi rol se enfocó en:','s2.ml1':'Traducir el concepto inicial en un sistema visual cohesivo','s2.ml2':'Diseñar la experiencia y los flujos de punta a punta','s2.ml3':'Definir el comportamiento del motion y los patrones de interacción','s2.ml4':'Crear soluciones escalables para múltiples variaciones de contenido',
+      's3.h':'El Reto','s3.p1':'El punto de partida no era un producto completamente definido, sino una dirección conceptual basada en moodboards e ideas narrativas.','s3.p2':'El reto era transformar esto en una experiencia real mientras se equilibraba:',
+      's3.l1':'Contenido y storytelling en evolución','s3.l2':'Múltiples escenarios dinámicos de usuario','s3.l3':'Identidad visual sólida','s3.l4':'Restricciones técnicas y de tiempo',
+      's4.h':'Concepto y Dirección Visual','s4.p1':'El concepto central se basó en la idea de un "eco" — representando cómo los hábitos de escucha de los usuarios resuenan a lo largo del año.','s4.p2':'Esto se tradujo en un sistema visual inspirado en:',
+      's4.l1':'Ondas de sonido','s4.l2':'Difusión de luz','s4.l3':'Repetición tipo fractal','s4.note':'La intención era crear una experiencia fluida e inmersiva, no una secuencia estática de pantallas.',
+      's5.h':'Exploración — Sistema de Fondos','s5.p':'Para soportar la escalabilidad, desarrollé un sistema de fondos flexible. La exploración asistida por IA se usó para:',
+      's5.l1':'Generar variaciones rápidamente','s5.l2':'Mantener consistencia visual','s5.l3':'Adaptarse a diferentes momentos y estados de ánimo',
+      's6.h':'Diseñando el Motion','s6.p':'El motion fue una parte clave de la experiencia, reforzando la idea de "eco" a través de un movimiento sutil y continuo. Para comunicarlo claramente, creé:',
+      's6.l1':'Un storyboard de motion','s6.l2':'Un prototipo de animación de referencia','s6.note1':'<strong>iOS</strong> → implementación parcial de motion','s6.note2':'<strong>Android</strong> → fallback estático',
+      's7.h':'Evolución del Lenguaje Visual','s7.p':'Se desarrollaron elementos visuales adicionales para apoyar el storytelling en todos los flujos. El sistema evolucionó de:','s7.note':'Íconos de línea simples → hacia elementos 3D expresivos y coloridos',
+      's8.h':'Diseño de Experiencia — Flujos','s8.p':'La experiencia se estructuró como una secuencia de 12 flujos narrativos, cada uno representando un momento clave en el año del usuario. Estos flujos necesitaban:',
+      's8.l1':'Funcionar de manera independiente','s8.l2':'Mantener continuidad narrativa','s8.l3':'Soportar múltiples variaciones de contenido',
+      's9.h':'Integraciones de Marca','s9.p':'Durante el desarrollo, se integraron marcas externas en la experiencia. Esto requirió:',
+      's9.l1':'Diseñar momentos de marca dentro del flujo','s9.l2':'Mantener consistencia visual','s9.l3':'Asegurar que la experiencia aún se sintiera cohesiva',
+      's10.h':'Experiencia Compartible','s10.p':'Se diseñaron formatos compartibles personalizados para diferentes flujos y plataformas. Por restricciones técnicas, la implementación final dependió del compartir nativo de pantalla.',
+      's10.note':'Esto reforzó la importancia de diseñar pantallas que sean inherentemente compartibles.',
+      's11.h':'Experiencia Final','s11.p':'El resultado final es una experiencia cohesiva y visualmente rica que transforma los datos del usuario en un viaje narrativo.',
+      's12.h':'Restricciones y Adaptación','s12.p':'A medida que el proyecto evolucionó, varios ajustes fueron necesarios:',
+      's12.l1':'El motion se simplificó por limitaciones de desarrollo','s12.l2':'Algunos elementos visuales se adaptaron para el rendimiento','s12.l3':'El contenido y los flujos cambiaron durante el desarrollo',
+      's12.note':'Diseñar con flexibilidad fue clave para mantener la calidad bajo estas restricciones.',
+      's13.h':'Resultado','s13.p1':'TREBEL ECO se lanzó en diciembre de 2025 como una experiencia de Resumen del Año completamente funcional. El producto final logró exitosamente:',
+      's13.l1':'Entregar una narrativa personalizada','s13.l2':'Soportar múltiples variaciones de contenido','s13.l3':'Mantener una identidad visual sólida','s13.l4':'Habilitar integraciones de marca',
+      's14.h':'Aprendizajes Clave','s14.l1':'Diseñar para escala requiere sistemas, no pantallas','s14.l2':'El motion debe apoyar la claridad, no competir con el contenido','s14.l3':'El storytelling personalizado necesita reglas visuales flexibles','s14.l4':'Las restricciones son parte del proceso de diseño, no bloqueadores',
+      'img.placeholder':'Agrega imagen aquí · assets/','video.note':'Reemplaza VIDEO_ID_HERE en el código fuente con el ID de tu video de YouTube.',
+    }
+  };
+  let currentLang = localStorage.getItem('lang') || 'en';
+  function applyLang(lang) { const t = dict[lang]; document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.getAttribute('data-i18n'); if (t[k] !== undefined) el.innerHTML = t[k]; }); document.documentElement.lang = lang; document.getElementById('btn-en').classList.toggle('active', lang==='en'); document.getElementById('btn-es').classList.toggle('active', lang==='es'); }
+  function setLang(lang) { if (lang===currentLang) return; document.body.classList.add('lang-switching'); setTimeout(() => { currentLang=lang; localStorage.setItem('lang',lang); applyLang(lang); document.body.classList.remove('lang-switching'); }, 200); }
+  function openLightbox(src,alt) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox-img').alt=alt||''; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; }
+  document.querySelectorAll('.cs-img-wrap img').forEach(img => { img.parentElement.addEventListener('click', () => openLightbox(img.src, img.alt)); });
+  document.addEventListener('keydown', e => { if (e.key==='Escape') closeLightbox(); });
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }); }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  if (currentLang==='es') applyLang('es');
+</script>
+</body>
+</html>
