@@ -381,10 +381,16 @@
       filter: grayscale(0) brightness(1);
     }
 
+    .brand-info {
+      padding: 14px 20px 18px;
+      border-top: 1px solid var(--border);
+    }
     .brand-name {
-      padding: 14px 20px;
       font-family: var(--font-display); font-size: 14px; font-weight: 700;
-      letter-spacing: 0.02em; border-top: 1px solid var(--border);
+      letter-spacing: 0.02em; margin-bottom: 5px;
+    }
+    .brand-role {
+      font-size: 12px; color: var(--muted); line-height: 1.5;
     }
 
     /* ─── ABOUT ───────────────────────────── */
@@ -530,7 +536,7 @@
   <div class="hero-inner">
     <div class="hero-copy">
       <p class="hero-eyebrow" data-i18n="hero.eyebrow">Product Designer · Available for hire</p>
-      <h1 class="hero-title">Hey, I'm<br><em>Marco</em></h1>
+      <h1 class="hero-title" data-i18n="hero.title">Hey, I'm<br><em>Marco</em></h1>
       <p class="hero-tagline" data-i18n="hero.tagline">
         Product Designer focused on engagement, gamification, and scalable mobile experiences.
       </p>
@@ -637,19 +643,28 @@
       <div class="brand-logo-area">
         <img src="assets/logo-reforma.png" alt="Grupo Reforma" />
       </div>
-      <p class="brand-name">Grupo Reforma</p>
+      <div class="brand-info">
+        <p class="brand-name">Grupo Reforma</p>
+        <p class="brand-role" data-i18n="exp.reforma.role">Digital Design · Multimedia · Web · Motion</p>
+      </div>
     </div>
     <div class="brand-card reveal reveal-delay-2">
       <div class="brand-logo-area">
         <img src="assets/logo-trebel.png" alt="TREBEL" />
       </div>
-      <p class="brand-name">TREBEL</p>
+      <div class="brand-info">
+        <p class="brand-name">TREBEL</p>
+        <p class="brand-role" data-i18n="exp.trebel.role">Product Design · Mobile App · Design System · Monetization</p>
+      </div>
     </div>
     <div class="brand-card reveal reveal-delay-3">
       <div class="brand-logo-area">
         <img src="assets/logo-televisa.png" alt="TELEVISA Digital" />
       </div>
-      <p class="brand-name">TELEVISA Digital</p>
+      <div class="brand-info">
+        <p class="brand-name">TELEVISA Digital</p>
+        <p class="brand-role" data-i18n="exp.televisa.role">Mobile & Web Design · Digital Design</p>
+      </div>
     </div>
   </div>
 </section>
@@ -661,22 +676,22 @@
   <div class="about-inner">
     <div class="reveal">
       <h2 data-i18n="about.title">About</h2>
-      <p data-i18n="about.p1"><strong>Product Designer</strong> with experience in mobile apps, gamification, and content-driven experiences.</p>
-      <p data-i18n="about.p2">Focused on building scalable systems that balance <strong>user experience</strong>, business goals, and technical constraints.</p>
-      <p data-i18n="about.p3">I design digital products that are intuitive, visually strong, and built for real-world constraints.</p>
+      <p data-i18n="about.p1">I'm a <strong>Product Designer</strong> with experience in mobile apps, gamification, content experiences, and design systems.</p>
+      <p data-i18n="about.p2">I currently work at <strong>TREBEL Music App</strong>, collaborating with product, engineering, marketing, and content teams to design flows, components, and experiences that live inside a real app.</p>
+      <p data-i18n="about.p3">I like solving problems from clarity: organizing an interface, simplifying a flow, caring about visual execution, and building solutions that can scale without overcomplicating the team.</p>
     </div>
     <div class="skills-col reveal reveal-delay-2">
       <h3 data-i18n="about.toolkit">Toolkit</h3>
       <div class="skills-list">
+        <span class="skill-tag">Mobile UI</span>
+        <span class="skill-tag">Product Design</span>
+        <span class="skill-tag">Interaction Design</span>
+        <span class="skill-tag">UI Components</span>
+        <span class="skill-tag">Monetization UX</span>
+        <span class="skill-tag">Design Systems</span>
         <span class="skill-tag">Figma</span>
         <span class="skill-tag">Prototyping</span>
-        <span class="skill-tag">Design Systems</span>
-        <span class="skill-tag">Mobile UX</span>
-        <span class="skill-tag">Gamification</span>
-        <span class="skill-tag">User Research</span>
-        <span class="skill-tag">Wireframing</span>
         <span class="skill-tag">Motion Design</span>
-        <!--span class="skill-tag">Brand Identity</span-->
         <span class="skill-tag">HTML / CSS</span>
       </div>
     </div>
@@ -696,11 +711,11 @@
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4l6 4.5L14 4M2 4h12v8H2V4z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       majguerrero@gmail.com
     </a>
-    <a href="http://www.linkedin.com/in/marc0-jass0" target="_blank" class="contact-link">
+    <a href="https://linkedin.com/in/" target="_blank" class="contact-link">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="1.5" width="13" height="13" rx="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 6.5v5M4 4.5v.01M7 11.5V9a1.5 1.5 0 013 0v2.5M7 6.5v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
       LinkedIn
     </a>
-    <a href="https://www.behance.net/conDobleEse/projects" target="_blank" class="contact-link">
+    <a href="https://behance.net/" target="_blank" class="contact-link">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h5.5a2 2 0 010 4H2V4zm0 4h6a2 2 0 010 4H2V8z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 5.5h4M12 8.5c0 1.1.9 2 2 2s2-.9 2-2h-4zm0 0c0-1.1.9-2 2-2s2 .9 2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
       Behance
     </a>
@@ -712,7 +727,7 @@
 </section>
 
 <footer>
-  <p data-i18n="footer.text">Designed & built by me — 2026</p>
+  <p data-i18n="footer.text">Designed & built by Marco — 2025</p>
 </footer>
 
 
@@ -734,62 +749,50 @@
       'nav.about': 'About',
       'nav.contact': 'Contact',
 
-      'hero.eyebrow': 'Product Designer · Available for hire',
-      'hero.tagline': 'Product Designer focused on engagement, gamification, and scalable mobile experiences.',
+      'hero.eyebrow': 'Product Designer · Mobile UX/UI · Design Systems',
+      'hero.title': "Hey, I'm<br><em>Marco</em>",
+      'hero.tagline': 'I design mobile experiences, monetization flows, and design systems for digital products.',
       'hero.cta': 'See my work',
 
       'work.title': 'Selected Work',
-      'work.intro': 'A selection of projects across mobile, gamification, and brand design.',
+      'work.intro': 'Digital product projects across mobile UX/UI, gamification, design systems, and brand experiences.',
       'work.cta.study': 'View case study',
       'work.cta.detail': 'View detail',
 
       'work.songtastic.tag': 'Mobile · Gamification',
       'work.songtastic.title': 'Songtastic: Gamified Music Experience',
-      'work.songtastic.desc': 'Improving engagement and monetization through gameplay and feature redesign.',
+      'work.songtastic.desc': 'Redesign of a gamified music experience to improve clarity, engagement, and monetization opportunities within the app.',
 
       'work.echo.tag': 'Brand · Storytelling',
       'work.echo.title': 'TREBEL ECO: Year in Review Experience',
-      'work.echo.desc': 'Designing a personalized storytelling experience with motion, scalable visuals, and branded integrations.',
+      'work.echo.desc': 'Personalized yearly recap experience combining storytelling, motion, scalable visuals, and brand integration.',
 
       'work.unitec.tag': 'Design System · Web',
       'work.unitec.title': 'UNITEC: Scaling a Design System Under Tight Deadlines',
-      'work.unitec.desc': 'From incomplete wireframes to a fully designed platform across 30+ pages.',
+      'work.unitec.desc': 'From incomplete wireframes to a platform designed with a visual system, reusable components, and 30+ screens.',
 
       'work.mazati.tag': 'UX · Wireframes',
       'work.mazati.title': 'Mazati Reserve',
-      'work.mazati.desc': 'UX exploration and wireframe system for a luxury hospitality brand.',
+      'work.mazati.desc': 'Mazati Reserve: UX & Wireframes for Hospitality',
 
       'exp.title': 'Experience',
       'exp.desc': 'Worked on products used by millions of users, collaborating across product, brand, and engineering teams.',
+      'exp.trebel.role': 'Product Design · Mobile App · Design System · Monetization',
+      'exp.reforma.role': 'Digital Design · Multimedia · Web · Motion',
+      'exp.televisa.role': 'Mobile & Web Design · Digital Design',
 
       'about.title': 'About',
-      'about.p1': '<strong>Product Designer</strong> with experience in mobile apps, gamification, and content-driven experiences.',
-      'about.p2': 'Focused on building scalable systems that balance <strong>user experience</strong>, business goals, and technical constraints.',
-      'about.p3': 'I design digital products that are intuitive, visually strong, and built for real-world constraints.',
+      'about.p1': 'I\'m a <strong>Product Designer</strong> with experience in mobile apps, gamification, content experiences, and design systems.',
+      'about.p2': 'I currently work at <strong>TREBEL Music App</strong>, collaborating with product, engineering, marketing, and content teams to design flows, components, and experiences that live inside a real app.',
+      'about.p3': 'I like solving problems from clarity: organizing an interface, simplifying a flow, caring about visual execution, and building solutions that can scale without overcomplicating the team.',
       'about.toolkit': 'Toolkit',
 
       'contact.eyebrow': 'Get in touch',
       'contact.title': "Let's work<br>together.",
-      'contact.sub': 'Available for hire or freelance product design projects.',
+      'contact.sub': 'Open to freelance opportunities, remote work, and Product Designer / UX/UI Mobile roles.',
       'contact.cv': 'Download CV',
 
       'footer.text': 'Designed & built by Marco — 2025',
-
-      'cs.back': 'Back to portfolio',
-      'cs.overview': 'Overview',
-      'cs.role': 'Role',
-      'cs.type': 'Type',
-      'cs.focus': 'Focus',
-      'cs.placeholder': '✏️ Add your full case study content here — context, process, decisions, and outcomes.',
-      'cs.songtastic.role': 'Lead Product Designer',
-      'cs.echo.role': 'Product Designer',
-      'cs.echo.type': 'Brand Experience',
-      'cs.unitec.role': 'Product Designer',
-      'cs.unitec.type': 'Web Platform',
-      'cs.unitec.focus': 'Design System · 30+ pages',
-      'cs.mazati.role': 'UX Designer',
-      'cs.mazati.type': 'UX Exploration',
-      'cs.mazati.focus': 'Wireframes · Luxury Brand',
     },
 
     es: {
@@ -798,62 +801,50 @@
       'nav.about': 'Sobre mí',
       'nav.contact': 'Contacto',
 
-      'hero.eyebrow': 'Product Designer · Disponible para proyectos',
-      'hero.tagline': 'Product Designer enfocado en engagement, gamificación y experiencias móviles escalables.',
+      'hero.eyebrow': 'Product Designer · Mobile UX/UI · Design Systems',
+      'hero.title': "Hola, soy<br><em>Marco</em>",
+      'hero.tagline': 'Diseño experiencias mobile, flujos de monetización y sistemas de diseño para productos digitales.',
       'hero.cta': 'Ver mi trabajo',
 
       'work.title': 'Trabajo Selecto',
-      'work.intro': 'Una selección de proyectos en mobile, gamificación y diseño de marca.',
+      'work.intro': 'Proyectos de producto digital, mobile UX/UI, gamificación, sistemas de diseño y experiencias de marca.',
       'work.cta.study': 'Ver caso de estudio',
       'work.cta.detail': 'Ver detalle',
 
       'work.songtastic.tag': 'Mobile · Gamificación',
       'work.songtastic.title': 'Songtastic: Experiencia Musical Gamificada',
-      'work.songtastic.desc': 'Mejorando el engagement y la monetización a través de mecánicas de juego y rediseño de funciones.',
+      'work.songtastic.desc': 'Rediseño de una experiencia musical gamificada para mejorar claridad, participación y oportunidades de monetización dentro de la app.',
 
       'work.echo.tag': 'Marca · Storytelling',
       'work.echo.title': 'TREBEL ECO: Resumen del Año',
-      'work.echo.desc': 'Diseño de una experiencia personalizada de storytelling con motion, visuales escalables e integraciones de marca.',
+      'work.echo.desc': 'Experiencia personalizada tipo yearly recap, combinando storytelling, motion, visuales escalables e integración de marca.',
 
       'work.unitec.tag': 'Sistema de Diseño · Web',
       'work.unitec.title': 'UNITEC: Escalando un Sistema de Diseño Bajo Presión',
-      'work.unitec.desc': 'De wireframes incompletos a una plataforma completamente diseñada en más de 30 pantallas.',
+      'work.unitec.desc': 'De wireframes incompletos a una plataforma diseñada con sistema visual, componentes reutilizables y más de 30 pantallas.',
 
       'work.mazati.tag': 'UX · Wireframes',
       'work.mazati.title': 'Mazati Reserve',
-      'work.mazati.desc': 'Exploración UX y sistema de wireframes para una marca de hospitalidad de lujo.',
+      'work.mazati.desc': 'Mazati Reserve: UX & Wireframes para Hospitality',
 
       'exp.title': 'Experiencia',
       'exp.desc': 'He trabajado en productos usados por millones de usuarios, colaborando con equipos de producto, marca e ingeniería.',
+      'exp.trebel.role': 'Product Design · Mobile App · Design System · Monetización',
+      'exp.reforma.role': 'Diseño Digital · Multimedia · Web · Motion',
+      'exp.televisa.role': 'Mobile & Web Design · Diseño Digital',
 
       'about.title': 'Sobre mí',
-      'about.p1': '<strong>Product Designer</strong> con experiencia en apps móviles, gamificación y experiencias de contenido.',
-      'about.p2': 'Enfocado en construir sistemas escalables que equilibren la <strong>experiencia de usuario</strong>, los objetivos del negocio y las limitaciones técnicas.',
-      'about.p3': 'Diseño productos digitales que son intuitivos, visualmente sólidos y pensados para el mundo real.',
+      'about.p1': 'Soy <strong>Product Designer</strong> con experiencia en apps móviles, gamificación, experiencias de contenido y sistemas de diseño.',
+      'about.p2': 'Actualmente trabajo en <strong>TREBEL Music App</strong>, donde colaboro con equipos de producto, ingeniería, marketing y contenido para diseñar flujos, componentes y experiencias que viven dentro de una app real.',
+      'about.p3': 'Me gusta resolver problemas desde la claridad: ordenar una interfaz, simplificar un flujo, cuidar la ejecución visual y construir soluciones que puedan escalar sin complicar al equipo.',
       'about.toolkit': 'Herramientas',
 
       'contact.eyebrow': 'Escríbeme',
       'contact.title': 'Trabajemos<br>juntos.',
-      'contact.sub': 'Disponible para proyectos de diseño freelance o contratación directa.',
+      'contact.sub': 'Abierto a oportunidades freelance, remote work y roles de Product Designer / UX/UI Mobile.',
       'contact.cv': 'Descargar CV',
 
       'footer.text': 'Diseñado y desarrollado por Marco — 2025',
-
-      'cs.back': 'Volver al portafolio',
-      'cs.overview': 'Descripción general',
-      'cs.role': 'Rol',
-      'cs.type': 'Tipo',
-      'cs.focus': 'Enfoque',
-      'cs.placeholder': '✏️ Agrega el contenido completo del caso de estudio aquí — contexto, proceso, decisiones y resultados.',
-      'cs.songtastic.role': 'Product Designer Senior',
-      'cs.echo.role': 'Product Designer',
-      'cs.echo.type': 'Experiencia de Marca',
-      'cs.unitec.role': 'Product Designer',
-      'cs.unitec.type': 'Plataforma Web',
-      'cs.unitec.focus': 'Sistema de Diseño · 30+ pantallas',
-      'cs.mazati.role': 'UX Designer',
-      'cs.mazati.type': 'Exploración UX',
-      'cs.mazati.focus': 'Wireframes · Marca de Lujo',
     }
   };
 
